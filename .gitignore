@@ -1,0 +1,21 @@
+# Root
+node_modules
+.env
+.DS_Store
+
+# Frontend
+/client/node_modules
+/client/.env
+
+# Backend
+/server/node_modules
+/server/.env
+
+# Logs
+logs
+*.log
+
+# Build outputs (optional)
+client/dist
+client/build
+server/dist
