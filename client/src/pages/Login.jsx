@@ -3,6 +3,7 @@ import { Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { loginUser } from '../utils/authentication';
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -96,9 +97,9 @@ const LoginPage = () => {
 
         <div className="text-center mt-6 text-sm text-gray-600">
           Don't have an account?{' '}
-          <a href="/signup" className="text-blue-600 hover:underline">
+          <Link to="/signup" className="text-blue-600 hover:underline">
             Sign up
-          </a>
+          </Link>
         </div>
 
         <div className="text-center mt-2">

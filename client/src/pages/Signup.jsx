@@ -3,6 +3,7 @@ import { Eye, EyeOff } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { registerUser } from '../utils/authentication';
+import { Link } from 'react-router-dom';
 
 const SignupPage = () => {
   const [formData, setFormData] = useState({
@@ -151,7 +152,7 @@ const SignupPage = () => {
 
         <div className="mt-6 text-center text-sm text-gray-600">
           Already have an account?{' '}
-          <a href="/login" className="text-blue-600 hover:underline">Sign in</a>
+          <Link to="/login" className="text-blue-600 hover:underline">Sign in</Link>
         </div>
       </div>
     </div>
