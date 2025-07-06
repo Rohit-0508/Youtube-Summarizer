@@ -8,7 +8,13 @@ const historyRoutes = require('./routes/getHistory');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(cors());
+const allowedOrigins = [
+  'https://frolicking-sawine-f50a08.netlify.app',
+];
+
+app.use(cors({
+  origin: allowedOrigins,
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 connectDB();
