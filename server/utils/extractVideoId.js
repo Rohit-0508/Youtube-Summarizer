@@ -3,20 +3,26 @@ exports.getYoutubeVideoID = (url) => {
     const parsedUrl = new URL(url);
     const hostname = parsedUrl.hostname.replace('www.', '').replace('m.', '');
 
-    // Case 1: youtube.com/watch?v=...
+    // Case 1: Standard watch URL
     if (hostname === 'youtube.com' || hostname === 'youtube-nocookie.com') {
       const params = new URLSearchParams(parsedUrl.search);
-      return params.get('v');
+      const id = params.get('v');
+      if (id) return id;
+
+      // Case 2: Shorts
+      if (parsedUrl.pathname.startsWith('/shorts/')) {
+        return parsedUrl.pathname.split('/')[2] || parsedUrl.pathname.split('/')[1];
+      }
+
+      // ✅ Case 3: Live
+      if (parsedUrl.pathname.startsWith('/live/')) {
+        return parsedUrl.pathname.split('/')[2] || parsedUrl.pathname.split('/')[1];
+      }
     }
 
-    // Case 2: youtu.be/dQw4w9WgXcQ
+    // Case 4: Shortened link
     if (hostname === 'youtu.be') {
       return parsedUrl.pathname.split('/')[1];
-    }
-
-    // Case 3: youtube.com/shorts/VIDEO_ID
-    if (hostname === 'youtube.com' && parsedUrl.pathname.startsWith('/shorts/')) {
-      return parsedUrl.pathname.split('/')[2] || parsedUrl.pathname.split('/')[1];
     }
 
     return null;
