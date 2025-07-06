@@ -1,63 +1,25 @@
 # 🧠 AI YouTube Summarizer
 
-An AI-powered web app that lets users generate quick, clean summaries of YouTube videos (including long-form or live content). Ideal for fast comprehension, learning, or note-taking. Built with **React**, **Node.js**, **MongoDB**, and **Google Gemini AI**.
+An AI-powered app to summarize any YouTube video using Google Gemini API and YouTube Data API. Users can view summaries, download them as PDFs, and manage their history with a login system.
 
 ---
 
 ## 🚀 Live Demo
 
-🌐 [View Website on Netlify](https://your-netlify-link.netlify.app)
-
-📡 [Backend API on Render](https://your-render-api.onrender.com)
-
----
-
-## 📸 Preview
-
-> _You can replace these with actual screenshots in `/assets/screens` and link them here._
-
-| Home Page | Summary View | PDF Download |
-|-----------|--------------|---------------|
-| ![home](./assets/screens/home.png) | ![view](./assets/screens/summary.png) | ![pdf](./assets/screens/pdf.png) |
+- 🌐 Frontend: [Netlify Live Link](https://your-netlify-link.netlify.app)
+- 🛠 Backend API: [Render API Link](https://your-render-api.onrender.com)
 
 ---
 
-## ✨ Features
-
-- ✅ Paste any YouTube video link and get a clean AI-generated summary
-- 📄 Download the summary as a PDF
-- 🔐 Auth system (Login / Signup with JWT)
-- 📜 Summary history saved in your dashboard
-- 💡 Supports `watch`, `shorts`, `live`, and `youtu.be` links
-- 📱 Mobile-friendly UI with smooth UX
-- 🧠 Summarization powered by Google **Gemini AI**
-- 📺 Metadata fetched from YouTube API (title, views, channel, etc.)
-
----
-
-## 🧰 Tech Stack
-
-| Frontend     | Backend        | AI / APIs        | Deployment        |
-|--------------|----------------|------------------|-------------------|
-| React + TailwindCSS | Node.js + Express | Gemini Pro (Google) | Netlify (frontend) |
-| React Router | MongoDB + Mongoose | YouTube Data API v3 | Render (backend)   |
-| React PDF    | JWT Auth       |                  |                   |
-
----
-
-## 🛠️ Installation Guide
-
-### 1️⃣ Clone the Repository
+## 📦 Clone the Repository
 
 ```bash
 git clone https://github.com/yourusername/ai-youtube-summarizer.git
 cd ai-youtube-summarizer
 Make sure you have Node.js, npm, and MongoDB installed.
 
-2️⃣ Setup Environment Variables
-📁 server/.env
-Create a .env file inside the server/ directory:
-
+⚙️ Setup Environment Variables
+📁 Create a .env file in the server/ directory:
 ini
 Copy
 Edit
@@ -66,9 +28,9 @@ MONGO_URI=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret_key
 GEMINI_API_KEY=your_google_gemini_api_key
 YOUTUBE_API_KEY=your_youtube_data_api_key
-3️⃣ Get Required API Keys
-🔑 Gemini API Key (for AI Summary)
-Visit: https://aistudio.google.com/app/apikey
+🔑 Get Required API Keys
+🧠 Gemini API (Google)
+Go to: Google AI Studio
 
 Login with your Google account
 
@@ -76,8 +38,8 @@ Click Create API Key
 
 Copy and paste into .env as GEMINI_API_KEY
 
-🔑 YouTube Data API Key (for metadata)
-Go to: https://console.cloud.google.com
+🎥 YouTube Data API
+Go to: Google Cloud Console
 
 Create a new project
 
@@ -85,73 +47,72 @@ Enable YouTube Data API v3
 
 Go to APIs & Services > Credentials
 
-Create API key and paste into .env as YOUTUBE_API_KEY
+Create an API Key and add to .env as YOUTUBE_API_KEY
 
-4️⃣ Start Backend
+🧪 Run the Project Locally
+▶️ Start Backend
 bash
 Copy
 Edit
 cd server
 npm install
 npm run dev
-Backend runs on: http://localhost:5000
+Server runs at: http://localhost:5000
 
-5️⃣ Start Frontend
+💻 Start Frontend
 bash
 Copy
 Edit
 cd ../client
 npm install
 npm run dev
-Frontend runs on: http://localhost:5173
+Frontend runs at: http://localhost:5173
 
 🌍 Deployment Guide
-🔷 Backend on Render
-Push server/ folder to GitHub (as part of main repo or separate)
+🔷 Deploy Backend to Render
+Push your full repo or just server/ to GitHub
 
 Go to https://render.com
 
-Create a new Web Service
+Create a New Web Service
 
-Connect your repo and select:
+Select your repo, and set:
 
-Root directory: server
+Root Directory: server
 
 Build Command: npm install
 
 Start Command: npm run dev
 
-Add environment variables from .env
+Add the .env variables from earlier
 
-✅ After deployment, copy your Render API URL (e.g., https://ai-summary-api.onrender.com)
+After deploy, copy your Render URL (e.g. https://your-api.onrender.com)
 
-🟢 Frontend on Netlify
-Push client/ folder to GitHub (same or separate repo)
+🟢 Deploy Frontend to Netlify
+Push your full repo or client/ to GitHub
 
 Go to https://netlify.com
 
-Create a new project and connect GitHub
+Create a new site from GitHub
 
-Select:
+Set:
 
-Root directory: client
+Root Directory: client
 
-Build command: npm run build
+Build Command: npm run build
 
-Publish directory: dist
+Publish Directory: dist
 
-Add ENV variable: VITE_BACKEND_BASE_URL=https://your-render-api.onrender.com
+Environment Variable:
 
-🔁 If using CORS, ensure your Render backend allows Netlify origin
+env
+Copy
+Edit
+VITE_BACKEND_BASE_URL=https://your-render-api.onrender.com
+✅ Done! Your app is now fully live and working!
 
-🧪 Test Your App
-✅ Paste a YouTube URL → see summary
-
-✅ Signup/Login → try viewing history
-
-✅ Download a summary PDF → check content
-
-✅ Try links like:
+✅ Test Links
+Try these sample YouTube URLs:
 
 https://youtu.be/abc123
 
@@ -161,12 +122,18 @@ https://youtube.com/shorts/qwe789
 
 https://youtube.com/live/lArJnreyn8c?feature=shared
 
-🧠 Summary PDF & Link Support
-Handles all YouTube formats: watch, shorts, live, youtu.be
+🧠 Features
+🔗 Accepts YouTube watch, shorts, live, youtu.be links
 
-Summary is converted to clean bullet points
+🧾 Clean bullet-point summaries using Gemini AI
 
-Supports download as styled PDF using @react-pdf/renderer
+📄 Download summary as a professional PDF
+
+📈 View history of past summaries
+
+🔐 Auth (login/signup) with JWT
+
+💡 Smart error handling for broken links or invalid content
 
 📁 Folder Structure
 bash
@@ -190,29 +157,35 @@ ai-youtube-summarizer/
 │   ├── utils/
 │   ├── index.js
 │   └── .env
-🤝 Contributing
-Want to contribute or suggest improvements?
+🧠 Summary & PDF Logic
+Extracts YouTube video metadata using the Data API
 
+Sends the transcript to Gemini API for summarization
+
+Uses @react-pdf/renderer to format and download the summary
+
+🤝 Contributing
 bash
 Copy
 Edit
 git checkout -b feature/your-feature-name
 git commit -m "✨ Added your feature"
 git push origin feature/your-feature-name
+Feel free to open issues and PRs!
+
 📄 License
-This project is licensed under the MIT License.
+Licensed under the MIT License
 
 🙋‍♂️ Author
-👤 Rohit Verma
+Rohit Verma
 📧 rohitranaut91@gmail.com
-🔗 Portfolio
 🔗 GitHub
+🔗 Portfolio
 
-Give this repo a ⭐ if you found it helpful!
+⭐ Don’t forget to star this repo if you found it useful!
 
-markdown
+yaml
 Copy
 Edit
 
 ---
-
