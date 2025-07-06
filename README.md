@@ -40,6 +40,9 @@ An AI-powered web app that lets users generate quick, clean summaries of YouTube
 ```bash
 git clone https://github.com/yourusername/ai-youtube-summarizer.git
 cd ai-youtube-summarizer
+```
+
+
 Make sure you have Node.js, npm, and MongoDB installed.
 
 2️⃣ Setup Environment Variables
