@@ -49,11 +49,12 @@ Create a .env file inside the server/ directory:
 ini
 Copy
 Edit
-PORT=5000
+[PORT=5000
 MONGO_URI=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret_key
 GEMINI_API_KEY=your_google_gemini_api_key
 YOUTUBE_API_KEY=your_youtube_data_api_key
+]
 3️⃣ Get Required API Keys
 🔑 Gemini API Key (for AI Summary)
 Visit: https://aistudio.google.com/app/apikey
