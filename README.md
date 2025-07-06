@@ -45,21 +45,26 @@ cd ai-youtube-summarizer
 
 Make sure you have Node.js, npm, and MongoDB installed.
 
-2️⃣ Setup Environment Variables
-📁 server/.env
+### 2️⃣ Setup Environment Variables
+## 📁 server/.env
 Create a .env file inside the server/ directory:
 
-ini
-Copy
-Edit
-[PORT=5000
+```ini
+PORT=5000
 MONGO_URI=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret_key
 GEMINI_API_KEY=your_google_gemini_api_key
 YOUTUBE_API_KEY=your_youtube_data_api_key
-]
-3️⃣ Get Required API Keys
-🔑 Gemini API Key (for AI Summary)
+```
+## 📁 client/.env
+Create a .env file inside the client/ directory:
+
+```ini
+VITE_BACKEND_BASE_URL=your_backend_api_url
+```
+
+### 3️⃣ Get Required API Keys
+## 🔑 Gemini API Key (for AI Summary)
 Visit: https://aistudio.google.com/app/apikey
 
 Login with your Google account
@@ -68,7 +73,7 @@ Click Create API Key
 
 Copy and paste into .env as GEMINI_API_KEY
 
-🔑 YouTube Data API Key (for metadata)
+## 🔑 YouTube Data API Key (for metadata)
 Go to: https://console.cloud.google.com
 
 Create a new project
@@ -79,26 +84,24 @@ Go to APIs & Services > Credentials
 
 Create API key and paste into .env as YOUTUBE_API_KEY
 
-4️⃣ Start Backend
-bash
-Copy
-Edit
+### 4️⃣ Start Backend
+```bash
 cd server
 npm install
 npm run dev
 Backend runs on: http://localhost:5000
+```
 
-5️⃣ Start Frontend
-bash
-Copy
-Edit
+### 5️⃣ Start Frontend
+```bash
 cd ../client
 npm install
 npm run dev
 Frontend runs on: http://localhost:5173
+```
 
-🌍 Deployment Guide
-🔷 Backend on Render
+### 🌍 Deployment Guide
+## 🔷 Backend on Render
 Push server/ folder to GitHub (as part of main repo or separate)
 
 Go to https://render.com
@@ -117,7 +120,7 @@ Add environment variables from .env
 
 ✅ After deployment, copy your Render API URL (e.g., https://ai-summary-api.onrender.com)
 
-🟢 Frontend on Netlify
+## 🟢 Frontend on Netlify
 Push client/ folder to GitHub (same or separate repo)
 
 Go to https://netlify.com
@@ -136,7 +139,7 @@ Add ENV variable: VITE_BACKEND_BASE_URL=https://your-render-api.onrender.com
 
 🔁 If using CORS, ensure your Render backend allows Netlify origin
 
-🧪 Test Your App
+### 🧪 Test Your App
 ✅ Paste a YouTube URL → see summary
 
 ✅ Signup/Login → try viewing history
@@ -153,15 +156,15 @@ https://youtube.com/shorts/qwe789
 
 https://youtube.com/live/lArJnreyn8c?feature=shared
 
-🧠 Summary PDF & Link Support
+### 🧠 Summary PDF & Link Support
 Handles all YouTube formats: watch, shorts, live, youtu.be
 
 Summary is converted to clean bullet points
 
 Supports download as styled PDF using @react-pdf/renderer
 
-📁 Folder Structure
-bash
+### 📁 Folder Structure
+```bash
 Copy
 Edit
 ai-youtube-summarizer/
@@ -182,29 +185,25 @@ ai-youtube-summarizer/
 │   ├── utils/
 │   ├── index.js
 │   └── .env
-🤝 Contributing
+```
+## 🤝 Contributing
 Want to contribute or suggest improvements?
 
-bash
+```bash
 Copy
 Edit
 git checkout -b feature/your-feature-name
 git commit -m "✨ Added your feature"
 git push origin feature/your-feature-name
-📄 License
-This project is licensed under the MIT License.
+```
 
 🙋‍♂️ Author
 👤 Rohit Verma
 📧 rohitranaut91@gmail.com
-🔗 Portfolio
-🔗 GitHub
+🔗 [PORTFOLIO](https://animated-praline-ead024.netlify.app/)
+🔗 [LINKED IN](https://www.linkedin.com/in/rohit-verma-0324102b8/)
 
 Give this repo a ⭐ if you found it helpful!
-
-markdown
-Copy
-Edit
 
 ---
 
