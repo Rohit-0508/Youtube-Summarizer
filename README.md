@@ -14,7 +14,7 @@ An AI-powered web app that lets users generate quick, clean summaries of YouTube
 
 - ✅ Paste any YouTube video link and get a clean AI-generated summary
 - 📄 Download the summary as a PDF
-- 🔐 Auth system (Login / Signup with JWT)
+- 🔐 Auth system (Email/Password + Google OAuth via Passport.js & JWT)
 - 📜 Summary history saved in your dashboard
 - 💡 Supports `watch`, `shorts`, `live`, and `youtu.be` links
 - 📱 Mobile-friendly UI with smooth UX
@@ -55,6 +55,10 @@ MONGO_URI=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret_key
 GEMINI_API_KEY=your_google_gemini_api_key
 YOUTUBE_API_KEY=your_youtube_data_api_key
+GOOGLE_CLIENT_ID=your_google_oauth_client_id
+GOOGLE_CLIENT_SECRET=your_google_oauth_client_secret
+GOOGLE_CALLBACK_URL=https://youtube-summarizer-ofhd.onrender.com/api/auth/google/callback
+
 ```
 ## 📁 client/.env
 Create a .env file inside the client/ directory:
@@ -99,6 +103,20 @@ npm install
 npm run dev
 Frontend runs on: http://localhost:5173
 ```
+## 🔐 Google Login Integration
+
+This project supports login/signup via Google using Passport.js with OAuth 2.0.
+
+### How It Works:
+- On clicking "Sign in with Google", the frontend redirects to the backend's `/auth/google` route.
+- Backend handles OAuth using Passport and issues a JWT.
+- The frontend stores the token and user info in `localStorage`.
+
+### ✅ Setup:
+1. Go to [Google Cloud Console](https://console.cloud.google.com)
+2. Create OAuth client credentials (Web)
+3. Authorized redirect URI: https://youtube-summarizer-ofhd.onrender.com/api/auth/google/callback
+
 
 ### 🌍 Deployment Guide
 ## 🔷 Backend on Render
