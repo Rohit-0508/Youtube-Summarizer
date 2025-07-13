@@ -18,8 +18,24 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const storedToken = localStorage.getItem('auth_token');
     const storedUser = localStorage.getItem('auth_user');
+    const urlParams = new URLSearchParams(window.location.search);
+    const tokenFromURL = urlParams.get('token');
+    const userFromURL = urlParams.get('user');
 
-    if (storedToken && storedUser) {
+    if (tokenFromURL && userFromURL) {
+      try {
+        const parsedUser = JSON.parse(decodeURIComponent(userFromURL));
+        setUser(parsedUser);
+        setToken(tokenFromURL);
+        localStorage.setItem('auth_token', tokenFromURL);
+        localStorage.setItem('auth_user', JSON.stringify(parsedUser));
+
+        // Clean the URL
+        window.history.replaceState({}, document.title, window.location.pathname);
+      } catch (err) {
+        console.error('Error parsing user from Google login:', err);
+      }
+    } else if (storedToken && storedUser) {
       try {
         setToken(storedToken);
         setUser(JSON.parse(storedUser));

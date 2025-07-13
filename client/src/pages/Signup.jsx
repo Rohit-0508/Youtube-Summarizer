@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { registerUser } from '../utils/authentication';
 import { Link } from 'react-router-dom';
+import GoogleButton from '../components/GoogleButton';
 
 const SignupPage = () => {
   const [formData, setFormData] = useState({
@@ -57,6 +58,11 @@ const SignupPage = () => {
       setIsLoading(false);
     }
   };
+
+  const handleGoogleSignUp = () => {
+    window.location.href = `${import.meta.env.VITE_API_BASE_URL}/auth/google`;
+  };
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
@@ -149,6 +155,12 @@ const SignupPage = () => {
             {isLoading ? 'Creating account...' : 'Create Account'}
           </button>
         </form>
+        <div className="flex items-center justify-between mt-4">
+          <hr className="flex-grow border-gray-300" />
+          <span className="mx-2 text-gray-500">or</span>
+          <hr className="flex-grow border-gray-300" />
+        </div>
+        <GoogleButton text="Sign up with Google" clickHandler={handleGoogleSignUp} />
 
         <div className="mt-6 text-center text-sm text-gray-600">
           Already have an account?{' '}

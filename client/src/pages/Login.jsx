@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { loginUser } from '../utils/authentication';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import GoogleButton from '../components/GoogleButton';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -33,6 +34,10 @@ const LoginPage = () => {
       setIsLoading(false);
     }
   };
+  const handleGoogleSignIn = () => {
+    window.location.href = `${import.meta.env.VITE_API_BASE_URL}/auth/google`;
+  };
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
@@ -94,7 +99,12 @@ const LoginPage = () => {
             {isLoading ? 'Signing in...' : 'Sign In'}
           </button>
         </form>
-
+        <div className="flex items-center justify-between mt-4">
+          <hr className="flex-grow border-gray-300" />
+          <span className="mx-2 text-gray-500">or</span>
+          <hr className="flex-grow border-gray-300" />
+        </div>
+        <GoogleButton text="Sign in with Google" clickHandler={handleGoogleSignIn} />
         <div className="text-center mt-6 text-sm text-gray-600">
           Don't have an account?{' '}
           <Link to="/signup" className="text-blue-600 hover:underline">
