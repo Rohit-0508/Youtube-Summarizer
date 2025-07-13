@@ -57,7 +57,8 @@ GEMINI_API_KEY=your_google_gemini_api_key
 YOUTUBE_API_KEY=your_youtube_data_api_key
 GOOGLE_CLIENT_ID=your_google_oauth_client_id
 GOOGLE_CLIENT_SECRET=your_google_oauth_client_secret
-GOOGLE_CALLBACK_URL=https://youtube-summarizer-ofhd.onrender.com/api/auth/google/callback
+GOOGLE_CALLBACK_URL=your_render_callback_url
+CLIENT_URL=your_frontend_url
 
 ```
 ## 📁 client/.env
@@ -115,7 +116,7 @@ This project supports login/signup via Google using Passport.js with OAuth 2.0.
 ### ✅ Setup:
 1. Go to [Google Cloud Console](https://console.cloud.google.com)
 2. Create OAuth client credentials (Web)
-3. Authorized redirect URI: https://youtube-summarizer-ofhd.onrender.com/api/auth/google/callback
+3. Authorized redirect URI: your backend Url (e.g., `https://your-backend-url.com/api/auth/google/callback`)
 
 
 ### 🌍 Deployment Guide
