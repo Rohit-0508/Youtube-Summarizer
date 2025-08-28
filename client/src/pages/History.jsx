@@ -12,6 +12,10 @@ export default function HistoryPage() {
     const [selectedSummary, setSelectedSummary] = useState(null);
     const [loading, setLoading] = useState(true);
 
+    const [page, setPage] = useState(1);
+    const [limit] = useState(6); // how many per page
+    const [totalPages, setTotalPages] = useState(1);
+
 
     const { token } = useAuth();
 
@@ -19,8 +23,9 @@ export default function HistoryPage() {
         const loadHistory = async () => {
             if (!token) return;
             try {
-                const data = await fetchHistory(token);
+                const data = await fetchHistory(token, page, limit);
                 setSummaryHistory(data.history || []);
+                setTotalPages(data.pagination?.totalPages || 1);
             } catch (error) {
                 console.error("Failed to fetch history:", error);
             } finally {
@@ -28,7 +33,7 @@ export default function HistoryPage() {
             }
         };
         loadHistory();
-    }, [token]);
+    }, [token, page]);
 
     const filteredHistory = summaryHistory.filter(
         (item) =>
@@ -109,6 +114,29 @@ export default function HistoryPage() {
                     ))}
                 </div>
             )}
+            {/* Pagination Controls */}
+            {!loading && totalPages > 1 && (
+                <div className="flex justify-center items-center gap-4 mt-8">
+                    <button
+                        onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+                        disabled={page === 1}
+                        className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
+                    >
+                        Prev
+                    </button>
+                    <span className="text-gray-700">
+                        Page {page} of {totalPages}
+                    </span>
+                    <button
+                        onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
+                        disabled={page === totalPages}
+                        className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
+                    >
+                        Next
+                    </button>
+                </div>
+            )}
+
 
             {/* Modal View */}
             {selectedSummary && (
