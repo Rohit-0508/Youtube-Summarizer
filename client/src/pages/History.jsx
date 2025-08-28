@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Calendar, Clock, Download, Eye, Search } from "lucide-react";
+import { Calendar, Clock, Download, Eye, Search, Loader2 } from "lucide-react"; // 👈 Added Loader2 spinner
 import fetchHistory from "../utils/fetchHistory";
 import { useAuth } from "../context/AuthContext";
 import SummaryOutput from "../components/SummaryOutput";
@@ -12,10 +12,12 @@ export default function HistoryPage() {
     const [selectedSummary, setSelectedSummary] = useState(null);
     const [loading, setLoading] = useState(true);
 
+    // 👇 New state to track when switching pages only
+    const [pageLoading, setPageLoading] = useState(false);
+
     const [page, setPage] = useState(1);
     const [limit] = useState(6); // how many per page
     const [totalPages, setTotalPages] = useState(1);
-
 
     const { token } = useAuth();
 
@@ -23,6 +25,7 @@ export default function HistoryPage() {
         const loadHistory = async () => {
             if (!token) return;
             try {
+                if (page > 1) setPageLoading(true); // 👈 Show spinner overlay only when changing page
                 const data = await fetchHistory(token, page, limit);
                 setSummaryHistory(data.history || []);
                 setTotalPages(data.pagination?.totalPages || 1);
@@ -30,6 +33,7 @@ export default function HistoryPage() {
                 console.error("Failed to fetch history:", error);
             } finally {
                 setLoading(false);
+                setPageLoading(false); // 👈 Stop page loader after fetch
             }
         };
         loadHistory();
@@ -40,15 +44,8 @@ export default function HistoryPage() {
             item.title?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-
-
-
-
-
-
-
     return (
-        <div className="max-w-6xl mx-auto p-6 bg-gray-100">
+        <div className="max-w-6xl mx-auto p-6 bg-gray-100 relative">
             {/* Search bar */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
                 <h1 className="text-3xl font-bold text-gray-900 mb-4 sm:mb-0">Summary History</h1>
@@ -66,7 +63,10 @@ export default function HistoryPage() {
 
             {/* Loader / Empty / Results */}
             {loading ? (
-                <p className="text-center text-gray-500 py-10">Loading history...</p>
+                // 👇 Replaced text loader with Lucide spinner
+                <div className="flex justify-center items-center py-20">
+                    <Loader2 className="w-8 h-8 text-gray-600 animate-spin" />
+                </div>
             ) : filteredHistory.length === 0 ? (
                 <div className="text-center py-12">
                     <Clock className="h-12 w-12 text-gray-400 mx-auto mb-4" />
@@ -76,73 +76,80 @@ export default function HistoryPage() {
                     </p>
                 </div>
             ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {filteredHistory.map((item) => (
-                        <div
-                            key={item._id || item.id}
-                            className="bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-200"
-                        >
-                            <img
-                                src={item.thumbnail}
-                                alt={item.title}
-                                className="w-full h-40 sm:h-44 md:h-48 lg:h-40 object-cover rounded-t-lg"
-                            />
-                            <div className="p-4">
-                                <h3 className="font-semibold text-gray-900 mb-2">{item.title}</h3>
-                                <p className="text-sm text-gray-600 mb-2">{item.channel}</p>
-                                <div className="flex items-center text-xs text-gray-500 mb-4">
-                                    <Calendar className="h-3 w-3 mr-1" />
-                                    {new Date(item.createdAt).toLocaleDateString()}
-                                    <span className="mx-2">•</span>
-                                    <Eye className="h-3 w-3 mr-1" />
-                                    {item.views}
-                                </div>
+                <div className="relative">
+                    {/* 👇 Overlay spinner when switching pages */}
+                    {pageLoading && (
+                        <div className="absolute inset-0 bg-white/70 backdrop-blur-sm flex items-center justify-center z-10">
+                            <Loader2 className="w-10 h-10 text-blue-600 animate-spin" />
+                        </div>
+                    )}
 
-                                {/* View and Download Buttons */}
-                                <div className="flex gap-2">
-                                    <button
-                                        onClick={() => setSelectedSummary(item)}
-                                        className="flex-1 border-2 border-gray-200 cursor-pointer text-sm ss rounded-lg px-3 py-1 hover:bg-gray-100"
-                                    >
-                                        <Eye className="h-4 w-4 inline-block mr-1" />
-                                        View
-                                    </button>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {filteredHistory.map((item) => (
+                            <div
+                                key={item._id || item.id}
+                                className="bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-200"
+                            >
+                                <img
+                                    src={item.thumbnail}
+                                    alt={item.title}
+                                    className="w-full h-40 sm:h-44 md:h-48 lg:h-40 object-cover rounded-t-lg"
+                                />
+                                <div className="p-4">
+                                    <h3 className="font-semibold text-gray-900 mb-2">{item.title}</h3>
+                                    <p className="text-sm text-gray-600 mb-2">{item.channel}</p>
+                                    <div className="flex items-center text-xs text-gray-500 mb-4">
+                                        <Calendar className="h-3 w-3 mr-1" />
+                                        {new Date(item.createdAt).toLocaleDateString()}
+                                        <span className="mx-2">•</span>
+                                        <Eye className="h-3 w-3 mr-1" />
+                                        {item.views}
+                                    </div>
 
+                                    {/* View Button */}
+                                    <div className="flex gap-2">
+                                        <button
+                                            onClick={() => setSelectedSummary(item)}
+                                            className="flex-1 border-2 border-gray-200 cursor-pointer text-sm rounded-lg px-3 py-1 hover:bg-gray-100 transition"
+                                        >
+                                            <Eye className="h-4 w-4 inline-block mr-1" />
+                                            View
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
             )}
+
             {/* Pagination Controls */}
             {!loading && totalPages > 1 && (
                 <div className="flex justify-center items-center gap-4 mt-8">
                     <button
                         onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
                         disabled={page === 1}
-                        className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
+                        className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed transition"
                     >
                         Prev
                     </button>
-                    <span className="text-gray-700">
+                    <span className="text-gray-700 font-medium">
                         Page {page} of {totalPages}
                     </span>
                     <button
                         onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
                         disabled={page === totalPages}
-                        className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
+                        className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed transition"
                     >
                         Next
                     </button>
                 </div>
             )}
 
-
             {/* Modal View */}
             {selectedSummary && (
                 <div className="fixed inset-0 bg-black/10 backdrop-blur-sm flex justify-center items-center z-50 px-4">
                     <div className="relative max-w-5xl w-full bg-white rounded-lg shadow-lg p-6 pt-12 overflow-auto max-h-[90vh]">
-
                         {/* ✕ Close Button */}
                         <button
                             onClick={() => setSelectedSummary(null)}
@@ -170,7 +177,6 @@ export default function HistoryPage() {
                             </PDFDownloadLink>
                         </div>
 
-
                         {/* 🧾 Summary Content */}
                         <div id="summary-pdf-content" className="mt-4">
                             <SummaryOutput
@@ -180,12 +186,9 @@ export default function HistoryPage() {
                                 }}
                             />
                         </div>
-
                     </div>
                 </div>
             )}
-
-
         </div>
     );
 }
