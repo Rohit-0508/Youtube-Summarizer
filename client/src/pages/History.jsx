@@ -25,7 +25,7 @@ export default function HistoryPage() {
         const loadHistory = async () => {
             if (!token) return;
             try {
-                if (page > 1) setPageLoading(true); // 👈 Show spinner overlay only when changing page
+                setPageLoading(true); // 👈 Show spinner overlay only when changing page
                 const data = await fetchHistory(token, page, limit);
                 setSummaryHistory(data.history || []);
                 setTotalPages(data.pagination?.totalPages || 1);
