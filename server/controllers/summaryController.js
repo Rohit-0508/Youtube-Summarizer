@@ -19,7 +19,7 @@ exports.getSummary = async (req, res) => {
         let existingUserSummary = await Summary.findOne({ userId, videoUrl: url });
 
         if (existingUserSummary) {
-            return res.status(200).json({ summary: existingUserSummary.summaryText, title: existingUserSummary.title, thumbnail: existingUserSummary.thumbnail, duration: existingUserSummary.duration, views: existingUserSummary.views });
+            return res.status(200).json({ summary: existingUserSummary.summaryText, title: existingUserSummary.title, thumbnail: existingUserSummary.thumbnail, duration: existingUserSummary.duration, views: existingUserSummary.views, fromCache: true });
         }
 
         let existingSummary = await Summary.findOne({ videoUrl: url });
@@ -43,6 +43,7 @@ exports.getSummary = async (req, res) => {
                 thumbnail: existingSummary.thumbnail,
                 duration: existingSummary.duration,
                 views: existingSummary.views,
+                fromCache: true
             });
         }
 
@@ -66,7 +67,7 @@ exports.getSummary = async (req, res) => {
         });
 
 
-        return res.status(200).json({ summary: summaryText, title, thumbnail, duration, views });
+        return res.status(200).json({ summary: summaryText, title, thumbnail, duration, views, fromCache: false });
     } catch (error) {
         console.error('Error in summary controller:', error);
         return res.status(500).json({ error: 'Internal server error' });
