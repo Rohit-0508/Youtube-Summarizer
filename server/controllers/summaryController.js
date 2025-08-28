@@ -16,6 +16,38 @@ exports.getSummary = async (req, res) => {
         if (!videoID) {
             return res.status(400).json({ error: 'Invalid YouTube URL' });
         }
+        let existingUserSummary = await Summary.findOne({ userId, videoUrl: url });
+
+        if (existingUserSummary) {
+            return res.status(200).json({ summary: existingUserSummary.summaryText, title: existingUserSummary.title, thumbnail: existingUserSummary.thumbnail, duration: existingUserSummary.duration, views: existingUserSummary.views });
+        }
+
+        let existingSummary = await Summary.findOne({ videoUrl: url });
+
+
+        if (existingSummary) {
+            // Save for current user without hitting Gemini API
+            await Summary.create({
+                userId,
+                videoUrl: url,
+                title: existingSummary.title,
+                thumbnail: existingSummary.thumbnail,
+                duration: existingSummary.duration,
+                views: existingSummary.views,
+                summaryText: existingSummary.summaryText
+            });
+
+            return res.status(200).json({
+                summary: existingSummary.summaryText,
+                title: existingSummary.title,
+                thumbnail: existingSummary.thumbnail,
+                duration: existingSummary.duration,
+                views: existingSummary.views,
+            });
+        }
+
+
+
         // Will get the summary using the ai later
         const { title, description, thumbnail, duration, views } = await getVideoMetadata(videoID);
         if (!title || !description) {
