@@ -74,7 +74,36 @@ exports.getSummary = async (req, res) => {
     }
 }
 exports.getSummaryHistory = async (req, res) => {
-    const userId = req.userId;
-    const history = await Summary.find({ userId: userId }).sort({ date: -1 });
-    res.status(200).json({ history });
+    try {
+        const userId = req.userId;
+
+        // default values if query params not provided
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+
+        // calculate how many docs to skip
+        const skip = (page - 1) * limit;
+
+        // fetch history with pagination
+        const history = await Summary.find({ userId })
+            .sort({ createdAt: -1 })
+            .skip(skip)
+            .limit(limit);
+
+        // total count (for frontend to know total pages)
+        const total = await Summary.countDocuments({ userId });
+
+        res.status(200).json({
+            history,
+            pagination: {
+                total,
+                page,
+                limit,
+                totalPages: Math.ceil(total / limit),
+            },
+        });
+    } catch (error) {
+        console.error("Error fetching paginated history:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
 };
