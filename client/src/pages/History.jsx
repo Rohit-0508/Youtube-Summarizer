@@ -8,6 +8,7 @@ import SummaryPDF from "../components/SummaryPDF";
 
 export default function HistoryPage() {
     const [searchTerm, setSearchTerm] = useState("");
+    const [debouncedSearch, setDebouncedSearch] = useState("");
     const [summaryHistory, setSummaryHistory] = useState([]);
     const [selectedSummary, setSelectedSummary] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -22,11 +23,20 @@ export default function HistoryPage() {
     const { token } = useAuth();
 
     useEffect(() => {
+        const timer = setTimeout(() => {
+            setDebouncedSearch(searchTerm);
+            setPage(1); 
+        }, 400); 
+
+        return () => clearTimeout(timer);
+    }, [searchTerm]);
+
+    useEffect(() => {
         const loadHistory = async () => {
             if (!token) return;
             try {
-                setPageLoading(true); // 👈 Show spinner overlay only when changing page
-                const data = await fetchHistory(token, page, limit);
+                setPageLoading(true);
+                const data = await fetchHistory(token, page, limit, debouncedSearch);
                 setSummaryHistory(data.history || []);
                 setTotalPages(data.pagination?.totalPages || 1);
             } catch (error) {
@@ -37,12 +47,7 @@ export default function HistoryPage() {
             }
         };
         loadHistory();
-    }, [token, page]);
-
-    const filteredHistory = summaryHistory.filter(
-        (item) =>
-            item.title?.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    }, [token, page, debouncedSearch]);
 
     return (
         <div className="max-w-6xl mx-auto p-6 bg-gray-100 relative">
@@ -67,7 +72,7 @@ export default function HistoryPage() {
                 <div className="flex justify-center items-center py-20">
                     <Loader2 className="w-8 h-8 text-gray-600 animate-spin" />
                 </div>
-            ) : filteredHistory.length === 0 ? (
+            ) : summaryHistory.length === 0 ? (
                 <div className="text-center py-12">
                     <Clock className="h-12 w-12 text-gray-400 mx-auto mb-4" />
                     <h3 className="text-lg font-medium text-gray-900 mb-2">No summaries found</h3>
@@ -85,7 +90,7 @@ export default function HistoryPage() {
                     )}
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {filteredHistory.map((item) => (
+                        {summaryHistory.map((item) => (
                             <div
                                 key={item._id || item.id}
                                 className="bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-200"

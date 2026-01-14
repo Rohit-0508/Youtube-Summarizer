@@ -74,36 +74,42 @@ exports.getSummary = async (req, res) => {
     }
 }
 exports.getSummaryHistory = async (req, res) => {
-    try {
-        const userId = req.userId;
+  try {
+    const userId = req.userId;
 
-        // default values if query params not provided
-        const page = parseInt(req.query.page) || 1;
-        const limit = parseInt(req.query.limit) || 10;
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const search = req.query.search || "";
 
-        // calculate how many docs to skip
-        const skip = (page - 1) * limit;
+    const skip = (page - 1) * limit;
 
-        // fetch history with pagination
-        const history = await Summary.find({ userId })
-            .sort({ createdAt: -1 })
-            .skip(skip)
-            .limit(limit);
+    // 🔍 Build search query
+    const query = {
+      userId,
+      ...(search && {
+        title: { $regex: search, $options: "i" }, // case-insensitive search
+      }),
+    };
 
-        // total count (for frontend to know total pages)
-        const total = await Summary.countDocuments({ userId });
+    const history = await Summary.find(query)
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
 
-        res.status(200).json({
-            history,
-            pagination: {
-                total,
-                page,
-                limit,
-                totalPages: Math.ceil(total / limit),
-            },
-        });
-    } catch (error) {
-        console.error("Error fetching paginated history:", error);
-        res.status(500).json({ error: "Internal server error" });
-    }
+    const total = await Summary.countDocuments(query);
+
+    res.status(200).json({
+      history,
+      pagination: {
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit),
+      },
+    });
+  } catch (error) {
+    console.error("Error fetching paginated history:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
 };
+

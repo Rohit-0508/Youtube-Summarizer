@@ -29,6 +29,7 @@ export default function Sidebar({ isOpen, onToggle }) {
 
   const handleLogout = () => {
     logout()
+    navigate('/');
     if (window.innerWidth < 1024) {
       onToggle()
     }

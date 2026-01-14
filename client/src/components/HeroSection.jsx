@@ -20,6 +20,7 @@ const HeroSection = ({ onSummarize }) => {
     setLoading(true);
     try {
       await onSummarize(url);
+      setUrl('');
     } catch (err) {
       console.error('Error summarizing:', err);
     } finally {
