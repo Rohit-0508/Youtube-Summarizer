@@ -1,29 +1,51 @@
-const { GoogleGenerativeAI } = require('@google/generative-ai');
-require('dotenv').config();
+const { GoogleGenAI } = require("@google/genai");
+require("dotenv").config();
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+const ai = new GoogleGenAI({
+  apiKey: process.env.GEMINI_API_KEY,
+});
 
 exports.summarizeVideo = async (videoUrl, title, description) => {
   try {
-     const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+    const prompt = `
+You are an expert content analyst.
 
-  const prompt = `
-Summarize the YouTube video titled "${title}" in detailed bullet points.
+Your task is to summarize the YouTube video titled:
+"${title}"
 
-Video description: 
+Use ONLY the information provided below.
+Do NOT assume or invent details that are not present.
+
+Video description:
 ${description}
-Video URL: ${videoUrl}
 
-Be specific and relevant. Avoid fluff or hallucination and just give the summary dont write anything extra 
+Video URL:
+${videoUrl}
+
+Instructions:
+- Produce a concise but detailed summary
+- Use clear, well-structured bullet points
+- Focus on the core ideas, explanations, and takeaways
+- Remove filler, repetition, and promotional content
+- Do NOT add opinions or extra commentary
+
+Output format:
+- 5 to 10 bullet points
+- Each bullet should be 1–2 lines max
+- Plain text only (no markdown, no headings)
+
+Output ONLY the summary bullets.
 `;
 
-    const result = await model.generateContent(prompt);
-    const response = await result.response;
-    const text = response.text();
 
-    return text;
+    const response = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: prompt,
+    });
+
+    return response.text;
   } catch (err) {
-    console.error('Gemini error:', err.message);
-    throw new Error('Failed to generate summary using Gemini.');
+    console.error("Gemini error:", err);
+    throw new Error("Failed to generate summary using Gemini.");
   }
 };
