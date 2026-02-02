@@ -1,12 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import HeroSection from '../components/HeroSection';
 import SummaryOutput from '../components/SummaryOutput';
 import fetchSummary from '../utils/fetchSummary';
 import { useAuth } from '../context/AuthContext';
-import AIProcessingLoader from '../components/AIProcessingLoader';
+import fetchStats from '../utils/fetchStats';
 
 const Home = () => {
   const [processing, setProcessing] = useState(false);
+  const [stats, setStats] = useState(null);
   const [summary, setSummary] = useState(null);
   const { token } = useAuth();
   const MIN_LOADER_TIME = 3600;
@@ -32,10 +33,14 @@ const Home = () => {
     }
   };
 
+  useEffect(() => {
+    fetchStats().then(setStats).catch(console.error);
+  }, []);
+
 
   return (
     <div className="min-h-full p-4 bg-[#0B0E14] text-gray-200  hide-scrollbar">
-      <HeroSection onSummarize={handleSummarize} processing={processing} summary={summary} />
+      <HeroSection onSummarize={handleSummarize} processing={processing} summary={summary} stats={stats} />
       <SummaryOutput summaryData={summary} />
     </div>
   );

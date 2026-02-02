@@ -4,7 +4,7 @@ const connectDB= require('./config/db')
 const summaryRoutes = require('./routes/summaryRoutes');
 const authRoutes = require('./routes/authRoutes');
 const historyRoutes = require('./routes/getHistory');
-
+const statRoutes = require('./routes/statRoutes');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -28,6 +28,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/history', historyRoutes );
 
 app.use('/api/summarize', summaryRoutes);
+app.use('/api/stats', statRoutes);
 
 
 app.listen(PORT, () => {

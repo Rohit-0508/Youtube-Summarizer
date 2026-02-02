@@ -3,8 +3,9 @@ import { Play, Sparkles } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { Link } from 'react-router-dom';
 import AIProcessingLoader from './AIProcessingLoader';
+import CountUp from './CountUp';
 
-const HeroSection = ({ onSummarize, processing, summary }) => {
+const HeroSection = ({ onSummarize, processing, summary, stats }) => {
   const [url, setUrl] = useState('');
   const [loading, setLoading] = useState(false);
   const [showAuthPrompt, setShowAuthPrompt] = useState(false);
@@ -112,23 +113,42 @@ const HeroSection = ({ onSummarize, processing, summary }) => {
           </div>
         )}
 
-        {/* Fun Stats */}
-        {(processing && !summary) ? <AIProcessingLoader /> :
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center mt-10">
-            <div className="p-4">
-              <div className="text-3xl font-bold text-[#7C7CFF]">10M+</div>
-              <div className="text-gray-400">Videos Summarized</div>
+        {/* Loader */}
+        {processing && !summary && <AIProcessingLoader />}
+
+        {/* Stats (always mounted) */}
+        <div
+          className={`grid grid-cols-1 md:grid-cols-3 gap-8 text-center mt-10 transition-opacity duration-300
+    ${processing && !summary ? "opacity-0 pointer-events-none" : "opacity-100"}
+  `}
+        >
+          <div className="p-4">
+            <div className="text-3xl font-bold text-[#7C7CFF]">
+              {stats && (
+                <CountUp
+                  to={stats.totalSummaryRequests}
+                  suffix="+"
+                />
+              )}
             </div>
-            <div className="p-4">
-              <div className="text-3xl font-bold text-[#7C7CFF]">95%</div>
-              <div className="text-gray-400">Accuracy Rate</div>
-            </div>
-            <div className="p-4">
-              <div className="text-3xl font-bold text-[#7C7CFF]">30s</div>
-              <div className="text-gray-400">Avg Processing Time</div>
-            </div>
+            <div className="text-gray-400">Videos Summarized</div>
           </div>
-        }
+
+          <div className="p-4">
+            <div className="text-3xl font-bold text-[#7C7CFF]">
+              <CountUp to={95} suffix="%" />
+            </div>
+            <div className="text-gray-400">Accuracy Rate</div>
+          </div>
+
+          <div className="p-4">
+            <div className="text-3xl font-bold text-[#7C7CFF]">
+              <CountUp to={30} suffix="s" />
+            </div>
+            <div className="text-gray-400">Avg Processing Time</div>
+          </div>
+        </div>
+
       </div>
     </section>
   );
