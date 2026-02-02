@@ -10,6 +10,7 @@ const HeroSection = ({ onSummarize, processing, summary, stats }) => {
   const [loading, setLoading] = useState(false);
   const [showAuthPrompt, setShowAuthPrompt] = useState(false);
   const { isAuthenticated } = useAuth();
+  const statsReady = Boolean(stats);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -122,31 +123,40 @@ const HeroSection = ({ onSummarize, processing, summary, stats }) => {
     ${processing && !summary ? "opacity-0 pointer-events-none" : "opacity-100"}
   `}
         >
-          <div className="p-4">
-            <div className="text-3xl font-bold text-[#7C7CFF]">
-              {stats && (
-                <CountUp
-                  to={stats.totalSummaryRequests}
-                  suffix="+"
-                />
-              )}
-            </div>
-            <div className="text-gray-400">Videos Summarized</div>
-          </div>
+          {statsReady ? (
+            <>
+              <div className="p-4">
+                <div className="text-3xl font-bold text-[#7C7CFF]">
+                  <CountUp to={stats.totalSummaryRequests} suffix="+" />
+                </div>
+                <div className="text-gray-400">Summary Requests</div>
+              </div>
 
-          <div className="p-4">
-            <div className="text-3xl font-bold text-[#7C7CFF]">
-              <CountUp to={95} suffix="%" />
-            </div>
-            <div className="text-gray-400">Accuracy Rate</div>
-          </div>
+              <div className="p-4">
+                <div className="text-3xl font-bold text-[#7C7CFF]">
+                  <CountUp to={95} suffix="%" />
+                </div>
+                <div className="text-gray-400">Accuracy Rate</div>
+              </div>
 
-          <div className="p-4">
-            <div className="text-3xl font-bold text-[#7C7CFF]">
-              <CountUp to={30} suffix="s" />
-            </div>
-            <div className="text-gray-400">Avg Processing Time</div>
-          </div>
+              <div className="p-4">
+                <div className="text-3xl font-bold text-[#7C7CFF]">
+                  <CountUp to={30} suffix="s" />
+                </div>
+                <div className="text-gray-400">Avg Processing Time</div>
+              </div>
+            </>
+          ) : (
+            /* Skeleton placeholder (optional but recommended) */
+            <>
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="p-4">
+                  <div className="h-8 w-24 mx-auto bg-[#1A2033] rounded animate-pulse mb-2" />
+                  <div className="h-4 w-32 mx-auto bg-[#1A2033] rounded animate-pulse" />
+                </div>
+              ))}
+            </>
+          )}
         </div>
 
       </div>
