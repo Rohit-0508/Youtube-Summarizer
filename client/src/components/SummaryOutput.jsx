@@ -57,6 +57,7 @@ const SummaryOutput = ({ summaryData }) => {
         ${typeof window !== "undefined" && window.html2pdfPrinting ? "" : "transition-all duration-700 ease-out"}
         ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"}
         flex justify-center mb-4 lg:mb-20
+        hide-scrollbar
         summary-output-container
       `}
     >

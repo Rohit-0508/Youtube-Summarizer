@@ -33,7 +33,7 @@ const Layout = ({ showSidebar = true }) => {
         </div>
 
         {/* Scrollable Page Content */}
-        <main className="flex-1 overflow-auto bg-[#0B0E14]">
+        <main className="flex-1 overflow-auto bg-[#0B0E14] hide-scrollbar">
           <Outlet /> {/* ✅ this renders your page components */}
         </main>
       </div>

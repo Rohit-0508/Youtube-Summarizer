@@ -174,35 +174,37 @@ export default function HistoryPage() {
 
             {/* Modal */}
             {selectedSummary && (
-                <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex justify-center items-center z-50 px-4">
-                    <div className="relative max-w-5xl w-full bg-[#131824] 
-                    border border-[#2A314A] rounded-xl p-6 pt-12 
-                    overflow-auto max-h-[90vh]">
-                        <button
-                            onClick={() => setSelectedSummary(null)}
-                            className="absolute cursor-pointer top-3 right-3 
-                            text-gray-400 hover:text-gray-200 text-xl font-bold"
-                        >
-                            ✕
-                        </button>
+                <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex justify-center items-center z-50 px-4 hide-scrollbar">
+                    <div className="relative max-w-5xl w-full bg-[#11141c] 
+                    border border-[#2A314A] rounded-xl px-6 py-2 
+                    overflow-auto max-h-[90vh] hide-scrollbar">
+                        <div className="flex justify-between">
 
-                        <div className="absolute top-3 right-12">
-                            <PDFDownloadLink
-                                document={<SummaryPDF summary={selectedSummary} />}
-                                fileName={`${selectedSummary.title.replace(/[^a-z0-9]/gi, "_").toLowerCase()}.pdf`}
-                                className="flex items-center gap-2 bg-[#7C7CFF] 
+                            <div className="">
+                                <PDFDownloadLink
+                                    document={<SummaryPDF summary={selectedSummary} />}
+                                    fileName={`${selectedSummary.title.replace(/[^a-z0-9]/gi, "_").toLowerCase()}.pdf`}
+                                    className="flex items-center gap-2 bg-[#7C7CFF] 
                                 text-white px-4 py-2 rounded-md 
                                 hover:bg-[#6A6AF5] transition text-sm"
+                                >
+                                    {({ loading }) =>
+                                        loading ? "Preparing PDF..." : (
+                                            <>
+                                                <Download className="h-4 w-4" />
+                                                Download PDF
+                                            </>
+                                        )
+                                    }
+                                </PDFDownloadLink>
+                            </div>
+                            <button
+                                onClick={() => setSelectedSummary(null)}
+                                className="cursor-pointer 
+                            text-gray-400 hover:text-gray-200 text-xl font-bold"
                             >
-                                {({ loading }) =>
-                                    loading ? "Preparing PDF..." : (
-                                        <>
-                                            <Download className="h-4 w-4" />
-                                            Download PDF
-                                        </>
-                                    )
-                                }
-                            </PDFDownloadLink>
+                                ✕
+                            </button>
                         </div>
 
                         <div id="summary-pdf-content" className="mt-4">
