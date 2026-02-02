@@ -18,10 +18,10 @@ const Home = () => {
   };
 
   return (
-    <>
+    <div className="min-h-full p-4 bg-[#0B0E14] text-gray-200">
       <HeroSection onSummarize={handleSummarize} />
       <SummaryOutput summaryData={summary} />
-    </>
+    </div>
   );
 };
 

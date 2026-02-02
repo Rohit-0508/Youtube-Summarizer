@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Play, Sparkles } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { Link } from 'react-router-dom';
+
 const HeroSection = ({ onSummarize }) => {
   const [url, setUrl] = useState('');
   const [loading, setLoading] = useState(false);
@@ -32,33 +33,41 @@ const HeroSection = ({ onSummarize }) => {
     <section className="py-20 text-center">
       <div className="max-w-4xl mx-auto">
         <div className="flex items-center justify-center mb-6">
-          <Sparkles className="h-8 w-8 text-blue-600 mr-2" />
-          <h1 className="text-5xl md:text-6xl font-bold text-gray-900">AI Video Summarizer</h1>
+          <Sparkles className="h-8 w-8 text-[#7C7CFF] mr-2" />
+          <h1 className="text-4xl md:text-6xl font-semibold text-gray-100">
+            AI Video Summarizer
+          </h1>
         </div>
 
-        <p className="text-xl md:text-2xl text-gray-600 mb-6 leading-relaxed">
+        <p className="text-xl md:text-2xl text-gray-400 mb-6 leading-relaxed">
           Get concise summaries of any YouTube video in seconds using AI
         </p>
 
-        <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-4 max-w-2xl mx-auto mb-8 px-4">
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col sm:flex-row gap-4 max-w-2xl mx-auto mb-8 px-4"
+        >
           <input
             type="url"
             placeholder="Paste YouTube video URL here..."
             value={url}
             onChange={(e) => setUrl(e.target.value)}
-            className="flex-1 h-14 px-4 text-lg bg-amber-50 border-2 border-blue-200 rounded-xl 
-                    focus:border-blue-200 focus:ring-2 focus:ring-blue-600 focus:outline-none"
+            className="flex-1 h-14 px-4 text-lg bg-[#0B0E14] 
+              border border-[#2A314A] rounded-xl 
+              text-gray-200 placeholder:text-gray-500
+              focus:border-[#7C7CFF] focus:outline-none"
           />
+
           <button
             type="submit"
             disabled={!url.trim() || loading}
             className={`
-    h-14 px-8 rounded-xl font-semibold transition-all duration-200 transform
-    ${url.trim() && !loading
-                ? 'bg-blue-600 text-white cursor-pointer hover:bg-blue-700 hover:scale-105'
-                : 'bg-blue-200 text-blue-600 cursor-not-allowed'
+              h-14 px-8 rounded-xl font-semibold transition-all duration-200
+              ${url.trim() && !loading
+                ? 'bg-[#7C7CFF] text-white cursor-pointer hover:bg-[#6A6AF5]'
+                : 'bg-[#1A2033] text-gray-500 cursor-not-allowed'
               }
-  `}
+            `}
           >
             {loading ? (
               <div className="flex items-center justify-center">
@@ -72,26 +81,28 @@ const HeroSection = ({ onSummarize }) => {
               </div>
             )}
           </button>
-
-
         </form>
 
         {showAuthPrompt && (
-          <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg animate-pulse">
-            <p className="text-yellow-800 mb-3 text-sm md:text-base font-medium">
+          <div className="mb-6 p-4 bg-yellow-500/10 border border-yellow-500/30 rounded-lg animate-pulse">
+            <p className="text-yellow-400 mb-3 text-sm md:text-base font-medium">
               Please sign in to summarize videos
             </p>
             <div className="flex gap-2 justify-center">
               <Link to="/login">
                 <button
-                  className="px-4 py-2 text-sm md:text-base font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md transition-colors duration-200"
+                  className="px-4 py-2 text-sm md:text-base font-medium 
+                  text-white bg-[#7C7CFF] hover:bg-[#6A6AF5] 
+                  rounded-md transition-colors duration-200 cursor-pointer"
                 >
                   Sign In
                 </button>
               </Link>
               <Link to="/signup">
                 <button
-                  className="px-4 py-2 text-sm md:text-base font-medium text-blue-600 border border-blue-600 hover:bg-blue-100 rounded-md transition-colors duration-200"
+                  className="px-4 py-2 text-sm md:text-base font-medium 
+                  text-gray-300 border border-[#2A314A] 
+                  hover:bg-[#1A2033] rounded-md transition-colors duration-200 cursor-pointer"
                 >
                   Sign Up
                 </button>
@@ -100,20 +111,19 @@ const HeroSection = ({ onSummarize }) => {
           </div>
         )}
 
-
-        {/* Fun Stats (Optional) */}
+        {/* Fun Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center mt-10">
           <div className="p-4">
-            <div className="text-3xl font-bold text-blue-600">10M+</div>
-            <div className="text-gray-600">Videos Summarized</div>
+            <div className="text-3xl font-bold text-[#7C7CFF]">10M+</div>
+            <div className="text-gray-400">Videos Summarized</div>
           </div>
           <div className="p-4">
-            <div className="text-3xl font-bold text-blue-600">95%</div>
-            <div className="text-gray-600">Accuracy Rate</div>
+            <div className="text-3xl font-bold text-[#7C7CFF]">95%</div>
+            <div className="text-gray-400">Accuracy Rate</div>
           </div>
           <div className="p-4">
-            <div className="text-3xl font-bold text-blue-600">30s</div>
-            <div className="text-gray-600">Avg Processing Time</div>
+            <div className="text-3xl font-bold text-[#7C7CFF]">30s</div>
+            <div className="text-gray-400">Avg Processing Time</div>
           </div>
         </div>
       </div>

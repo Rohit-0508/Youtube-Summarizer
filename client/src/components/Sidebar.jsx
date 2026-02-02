@@ -47,25 +47,29 @@ export default function Sidebar({ isOpen, onToggle }) {
 
       {/* Sidebar */}
       <div
-        className={`fixed left-0 top-0 h-screen w-64 bg-white shadow-xl transform transition-transform duration-300 ease-in-out z-50 lg:relative lg:translate-x-0 lg:shadow-none lg:border-r lg:border-gray-200 flex flex-col ${isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
+        className={`fixed left-0 top-0 h-screen w-64 bg-[#131824] border-r border-[#2A314A] transform transition-transform duration-300 ease-in-out z-50 lg:relative lg:translate-x-0 flex flex-col ${isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
           }`}
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-300 lg:justify-center flex-shrink-0">
-          <h2 className="text-xl font-bold text-gray-900">AI Summarizer</h2>
-          <button onClick={onToggle} className="lg:hidden cursor-pointer p-1 rounded hover:bg-gray-100">
+        <div className="flex items-center justify-between p-6 border-b border-[#2A314A] lg:justify-center flex-shrink-0">
+          <h2 className="text-lg font-semibold text-gray-100">AI Summarizer</h2>
+          <button
+            onClick={onToggle}
+            className="lg:hidden cursor-pointer p-1 rounded text-gray-400 hover:text-gray-200 hover:bg-[#1A2033]"
+          >
             <X className="h-5 w-5" />
           </button>
         </div>
+
         {isAuthenticated && user && (
-          <div className="p-4 border-b bg-gray-50 flex-shrink-0">
+          <div className="p-4 border-b border-[#2A314A] bg-[#0B0E14] flex-shrink-0">
             <div className="flex items-center">
-              <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                <User className="h-5 w-5 text-blue-600" />
+              <div className="w-10 h-10 bg-[#1A2033] rounded-full flex items-center justify-center">
+                <User className="h-5 w-5 text-[#7C7CFF]" />
               </div>
               <div className="ml-3">
-                <p className="text-sm font-medium text-gray-900">{user.name}</p>
-                <p className="text-xs text-gray-500">{user.email}</p>
+                <p className="text-sm font-medium text-gray-200">{user.name}</p>
+                <p className="text-xs text-gray-400">{user.email}</p>
               </div>
             </div>
           </div>
@@ -78,12 +82,19 @@ export default function Sidebar({ isOpen, onToggle }) {
               <li key={item.href}>
                 <button
                   onClick={() => handleNavClick(item.href)}
-                  className={`w-full cursor-pointer flex items-center px-4 py-3 rounded-lg text-left transition-colors ${location.pathname === item.href
-                    ? "bg-blue-100 text-blue-700 border-r-2 border-blue-700"
-                    : "text-gray-700 hover:bg-gray-100"
-                    }`}
+                  className={`w-full cursor-pointer flex items-center px-4 py-3 rounded-lg text-left transition-colors ${
+                    location.pathname === item.href
+                      ? "bg-[rgba(124,124,255,0.12)] text-[#7C7CFF]"
+                      : "text-gray-300 hover:bg-[#1A2033]"
+                  }`}
                 >
-                  <item.icon className="h-5 w-5 mr-3" />
+                  <item.icon
+                    className={`h-5 w-5 mr-3 ${
+                      location.pathname === item.href
+                        ? "text-[#7C7CFF]"
+                        : "text-gray-400"
+                    }`}
+                  />
                   {item.label}
                 </button>
               </li>
@@ -92,11 +103,11 @@ export default function Sidebar({ isOpen, onToggle }) {
         </nav>
 
         {/* Footer */}
-        <div className="p-4 border-t flex-shrink-0 border-gray-300">
+        <div className="p-4 border-t flex-shrink-0 border-[#2A314A]">
           {isAuthenticated ? (
             <button
               onClick={handleLogout}
-              className="w-full flex items-center cursor-pointer text-red-600 hover:text-red-700 hover:bg-red-50 px-4 py-2 rounded-lg transition-colors"
+              className="w-full flex items-center cursor-pointer text-red-400 hover:text-red-300 hover:bg-red-500/10 px-4 py-2 rounded-lg transition-colors"
             >
               <LogOut className="h-5 w-5 mr-3" />
               Sign Out
@@ -104,19 +115,18 @@ export default function Sidebar({ isOpen, onToggle }) {
           ) : (
             <div className="flex flex-col items-center">
               <Link to="/login" className="w-full max-w-[240px] mb-3">
-                <button className="w-full cursor-pointer flex items-center justify-center bg-blue-600 text-white text-sm px-4 py-2 rounded-md hover:bg-blue-700 transition-colors">
+                <button className="w-full cursor-pointer flex items-center justify-center bg-[#7C7CFF] text-white text-sm px-4 py-2 rounded-md hover:bg-[#6A6AF5] transition-colors">
                   <LogIn className="h-4 w-4 mr-2" />
                   Sign In
                 </button>
               </Link>
 
               <Link to="/signup" className="w-full max-w-[240px]">
-                <button className="w-full cursor-pointer flex items-center justify-center border border-gray-300 text-sm px-4 py-2 rounded-md hover:bg-gray-100 transition-colors">
+                <button className="w-full cursor-pointer flex items-center justify-center border border-[#2A314A] text-gray-300 text-sm px-4 py-2 rounded-md hover:bg-[#1A2033] transition-colors">
                   Sign Up
                 </button>
               </Link>
             </div>
-
           )}
         </div>
       </div>

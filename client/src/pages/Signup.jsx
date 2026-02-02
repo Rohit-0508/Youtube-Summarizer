@@ -65,20 +65,20 @@ const SignupPage = () => {
 
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
-      <div className="w-full max-w-md bg-white p-8 rounded-xl shadow-lg">
-        <h2 className="text-2xl font-bold text-center mb-2 text-gray-900">Create Account</h2>
-        <p className="text-center text-gray-600 mb-6">Sign up to get started</p>
+    <div className="min-h-screen bg-[#0B0E14] flex items-center justify-center pb-2 pt-4 pl-4 pr-4">
+      <div className="w-full max-w-md bg-[#131824] border border-[#2A314A] pb-4 px-8 pt-4 rounded-xl shadow-lg">
+        <h2 className="text-2xl font-bold text-center mb-2 text-gray-100">Create Account</h2>
+        <p className="text-center text-gray-300 mb-6">Sign up to get started</p>
 
         {error && (
-          <div className="bg-red-100 border border-red-200 text-red-700 px-4 py-3 rounded mb-4 text-sm">
+          <div className="bg-red-500/10 border border-red-500/30 text-red-400 px-4 py-3 rounded mb-4 text-sm">
             {error}
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700">Full Name</label>
+            <label className="block text-sm font-medium text-gray-400">Full Name</label>
             <input
               type="text"
               name="name"
@@ -86,12 +86,12 @@ const SignupPage = () => {
               value={formData.name}
               onChange={handleChange}
               required
-              className="pl-3 pr-3 py-2 w-full border border-gray-300 rounded-md"
+              className="pl-3 pr-3 py-2 w-full border bg-[#0B0E14] border-[#2A314A] text-gray-500 rounded-md focus:outline-none focus:ring-0 focus:border-[#7C7CFF]"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">Email</label>
+            <label className="block text-sm font-medium text-gray-400">Email</label>
             <input
               type="email"
               name="email"
@@ -99,12 +99,12 @@ const SignupPage = () => {
               value={formData.email}
               onChange={handleChange}
               required
-              className="pl-3 pr-3 py-2 w-full border border-gray-300 rounded-md"
+              className="pl-3 pr-3 py-2 w-full border bg-[#0B0E14] border-[#2A314A] text-gray-500 rounded-md focus:outline-none focus:ring-0 focus:border-[#7C7CFF]"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">Password</label>
+            <label className="block text-sm font-medium text-gray-400">Password</label>
             <div className="relative">
               <input
                 type={showPassword ? 'text' : 'password'}
@@ -113,7 +113,7 @@ const SignupPage = () => {
                 value={formData.password}
                 onChange={handleChange}
                 required
-                className="pl-3 pr-10 py-2 w-full border border-gray-300 rounded-md"
+                className="pl-3 pr-10 py-2 w-full border bg-[#0B0E14] border-[#2A314A] text-gray-500 rounded-md focus:outline-none focus:ring-0 focus:border-[#7C7CFF]"
               />
               <button
                 type="button"
@@ -126,7 +126,7 @@ const SignupPage = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">Confirm Password</label>
+            <label className="block text-sm font-medium text-gray-400">Confirm Password</label>
             <div className="relative">
               <input
                 type={showConfirmPassword ? 'text' : 'password'}
@@ -135,7 +135,7 @@ const SignupPage = () => {
                 value={formData.confirmPassword}
                 onChange={handleChange}
                 required
-                className="pl-3 pr-10 py-2 w-full border border-gray-300 rounded-md"
+                className="pl-3 pr-10 py-2 w-full border bg-[#0B0E14] border-[#2A314A] text-gray-500 rounded-md focus:outline-none focus:ring-0 focus:border-[#7C7CFF]"
               />
               <button
                 type="button"
@@ -150,21 +150,21 @@ const SignupPage = () => {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded"
+            className="w-full bg-[#7C7CFF] hover:bg-[#6A6AF5] text-white font-semibold py-2 rounded cursor-pointer"
           >
             {isLoading ? 'Creating account...' : 'Create Account'}
           </button>
         </form>
         <div className="flex items-center justify-between mt-4">
-          <hr className="flex-grow border-gray-300" />
+          <hr className="flex-grow border-[#2A314A]" />
           <span className="mx-2 text-gray-500">or</span>
-          <hr className="flex-grow border-gray-300" />
+          <hr className="flex-grow border-[#2A314A]" />
         </div>
         <GoogleButton text="Sign up with Google" clickHandler={handleGoogleSignUp} />
 
-        <div className="mt-6 text-center text-sm text-gray-600">
+        <div className="mt-2 text-center text-sm text-gray-300">
           Already have an account?{' '}
-          <Link to="/login" className="text-blue-600 hover:underline">Sign in</Link>
+          <Link to="/login" className="text-[#7C7CFF] hover:underline">Sign in</Link>
         </div>
       </div>
     </div>

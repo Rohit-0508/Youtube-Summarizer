@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
-body{
-    font-family: 'Poppins', sans-serif;
+
+@layer base {
+  body {
+    @apply bg-[#0B0E14] text-gray-200 antialiased;
+  }
 }
