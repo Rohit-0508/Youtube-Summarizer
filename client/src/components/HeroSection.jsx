@@ -115,12 +115,12 @@ const HeroSection = ({ onSummarize, processing, summary, stats }) => {
         )}
 
         {/* Loader */}
-        {processing && !summary && <AIProcessingLoader />}
+        {processing && <AIProcessingLoader />}
 
         {/* Stats (always mounted) */}
         <div
           className={`grid grid-cols-1 md:grid-cols-3 gap-8 text-center mt-10 transition-opacity duration-300
-    ${processing && !summary ? "opacity-0 pointer-events-none" : "opacity-100"}
+    ${processing ? "opacity-0 pointer-events-none" : "opacity-100"}
   `}
         >
           {statsReady ? (

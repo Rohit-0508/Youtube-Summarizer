@@ -21,6 +21,15 @@ const Home = () => {
 
       const elapsed = Date.now() - startTime;
       const remainingTime = Math.max(MIN_LOADER_TIME - elapsed, 0);
+      setStats((prev) =>
+        prev
+          ? {
+            ...prev,
+            totalSummaryRequests: prev.totalSummaryRequests + 1,
+          }
+          : prev
+      );
+
 
       setTimeout(() => {
         setSummary(result);
