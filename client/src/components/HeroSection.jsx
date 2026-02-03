@@ -127,12 +127,19 @@ const HeroSection = ({ onSummarize, processing, summary, stats }) => {
         )}
 
         {/* Loader */}
-        {processing && <AIProcessingLoader />}
+        {processing && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+            <AIProcessingLoader />
+          </div>
+        )}
+
 
         {/* Stats (always mounted) */}
         <div
-          className={`grid grid-cols-1 md:grid-cols-3 gap-8 text-center mt-10 transition-opacity duration-300
-    ${processing ? "opacity-0 pointer-events-none" : "opacity-100"}
+          className={`grid grid-cols-1 md:grid-cols-3 gap-8 text-center mt-10 transition-all duration-300
+    ${processing
+              ? "opacity-0 invisible h-0 overflow-hidden"
+              : "opacity-100 visible h-auto"}
   `}
         >
           {statsReady ? (

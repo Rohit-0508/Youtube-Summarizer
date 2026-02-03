@@ -11,7 +11,7 @@ const Layout = ({ showSidebar = true }) => {
   }
 
   return (
-    <div className="h-screen bg-[#0B0E14] flex overflow-hidden">
+    <div className="h-[100dvh] bg-[#0B0E14] flex overflow-hidden">
       {/* Sidebar */}
       <Sidebar isOpen={sidebarOpen} onToggle={() => setSidebarOpen(!sidebarOpen)} />
 
