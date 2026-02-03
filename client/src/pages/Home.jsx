@@ -4,6 +4,7 @@ import SummaryOutput from '../components/SummaryOutput';
 import fetchSummary from '../utils/fetchSummary';
 import { useAuth } from '../context/AuthContext';
 import fetchStats from '../utils/fetchStats';
+import toast from 'react-hot-toast';
 
 const Home = () => {
   const [processing, setProcessing] = useState(false);
@@ -15,9 +16,9 @@ const Home = () => {
   const handleSummarize = async (link) => {
     const startTime = Date.now();
     try {
-      setProcessing(true);
 
       const result = await fetchSummary(link, token);
+      setProcessing(true);
 
       const elapsed = Date.now() - startTime;
       const remainingTime = Math.max(MIN_LOADER_TIME - elapsed, 0);
@@ -38,7 +39,11 @@ const Home = () => {
 
     } catch (error) {
       setProcessing(false);
-      alert('Something went wrong!');
+      if (error?.response?.status === 403) {
+        toast.error(error.response.data.message || 'Free limit reached');
+      } else {
+        toast.error('Failed to summarize video');
+      }
     }
   };
 

@@ -16,7 +16,7 @@ const HeroSection = ({ onSummarize, processing, summary, stats }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if(!isValidYouTubeUrl(url)) {
+    if (!isValidYouTubeUrl(url)) {
       toast.error('Please enter a valid YouTube URL 🎯');
       setUrl('');
       return;
@@ -34,7 +34,11 @@ const HeroSection = ({ onSummarize, processing, summary, stats }) => {
       await onSummarize(url);
       setUrl('');
     } catch (err) {
-      console.error('Error summarizing:', err);
+      if (err?.response?.status === 403) {
+        toast.error(err.response.data.message || 'Free limit reached');
+      } else {
+        toast.error('Failed to summarize video');
+      }
     } finally {
       setLoading(false);
     }

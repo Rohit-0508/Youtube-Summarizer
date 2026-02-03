@@ -2,6 +2,7 @@ const { summarizeVideo } = require('../services/geminiService')
 const { getVideoMetadata } = require('../services/youtubeService');
 const { getYoutubeVideoID } = require('../utils/extractVideoId')
 const Summary = require('../models/Summary');
+const User = require('../models/Users');
 const Stats = require('../models/Stats');
 
 exports.getSummary = async (req, res) => {
@@ -22,6 +23,11 @@ exports.getSummary = async (req, res) => {
     if (!videoID) {
       return res.status(400).json({ error: 'Invalid YouTube URL' });
     }
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(401).json({ error: 'Unauthorized user' });
+    }
+
     let existingUserSummary = await Summary.findOne({ userId, videoUrl: url });
 
     if (existingUserSummary) {
@@ -42,6 +48,11 @@ exports.getSummary = async (req, res) => {
         views: existingSummary.views,
         summaryText: existingSummary.summaryText
       });
+
+      if (user.plan === 'free') {
+        user.summaryCount += 1;
+        await user.save();
+      }
 
       return res.status(200).json({
         summary: existingSummary.summaryText,
@@ -71,6 +82,10 @@ exports.getSummary = async (req, res) => {
       views,
       summaryText: summaryText
     });
+    if (user.plan === 'free') {
+      user.summaryCount += 1;
+      await user.save();
+    }
 
 
     return res.status(200).json({ summary: summaryText, title, thumbnail, duration, views, fromCache: false });

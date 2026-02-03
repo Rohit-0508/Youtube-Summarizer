@@ -1,6 +1,6 @@
-const mongoose= require('mongoose');
+const mongoose = require('mongoose');
 
-const userSchema= new mongoose.Schema({
+const userSchema = new mongoose.Schema({
     username: {
         type: String,
         required: true,
@@ -19,10 +19,20 @@ const userSchema= new mongoose.Schema({
             return !this.googleId;
         }
     },
-        googleId: {
+    googleId: {
         type: String,
         unique: true,
-        sparse: true // allows multiple nulls
+        sparse: true 
+    },
+    plan: {
+        type: String,
+        enum: ['free', 'pro'],
+        default: 'free',
+    },
+
+    summaryCount: {
+        type: Number,
+        default: 0,
     },
     createdAt: {
         type: Date,
@@ -30,4 +40,4 @@ const userSchema= new mongoose.Schema({
     }
 });
 
-module.exports= mongoose.model('User', userSchema);
+module.exports = mongoose.model('User', userSchema);

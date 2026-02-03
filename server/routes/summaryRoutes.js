@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const auth= require('../middleware/authMiddleware');
+const checkSummaryLimit = require('../middleware/checkSummaryLimit');
 
-const { getSummary, getStats } = require('../controllers/summaryController');
+const { getSummary } = require('../controllers/summaryController');
 
 // Define the route for summarizing text
-router.post('/',auth , getSummary);
-router.post('/stats', getStats);
+router.post('/',auth, checkSummaryLimit, getSummary);
 
 
 // Export the router
