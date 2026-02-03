@@ -5,10 +5,33 @@ import Layout from './components/Layout';
 import LoginPage from './pages/Login';
 import SignupPage from './pages/Signup';
 import HistoryPage from './pages/History';
+import { Toaster } from 'react-hot-toast';
 
 const App = () => {
   return (
     <Router>
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          style: {
+            background: '#1f2937', 
+            color: '#f9fafb',      
+            border: '1px solid #374151', 
+          },
+          success: {
+            iconTheme: {
+              primary: '#22c55e',
+              secondary: '#1f2937',
+            },
+          },
+          error: {
+            iconTheme: {
+              primary: '#ef4444',
+              secondary: '#1f2937',
+            },
+          },
+        }}
+      />
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />

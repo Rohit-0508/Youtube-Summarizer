@@ -3,6 +3,7 @@ import { User, History, Settings, LogOut, LogIn, X, Home } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext"
 import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
 
 
 export default function Sidebar({ isOpen, onToggle }) {
@@ -29,6 +30,7 @@ export default function Sidebar({ isOpen, onToggle }) {
 
   const handleLogout = () => {
     logout()
+    toast.success('Logged out successfully! 🎉');
     navigate('/');
     if (window.innerWidth < 1024) {
       onToggle()

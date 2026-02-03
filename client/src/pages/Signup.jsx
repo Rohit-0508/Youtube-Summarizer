@@ -5,6 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import { registerUser } from '../utils/authentication';
 import { Link } from 'react-router-dom';
 import GoogleButton from '../components/GoogleButton';
+import toast from 'react-hot-toast';
 
 const SignupPage = () => {
   const [formData, setFormData] = useState({
@@ -35,6 +36,12 @@ const SignupPage = () => {
 
     const { name, email, password, confirmPassword } = formData;
 
+    if (!/^[a-zA-Z0-9_.]{3,20}$/.test(name)) {
+      toast.error('Username can only contain letters, numbers, _ or .');
+      setIsLoading(false);
+      return;
+    }
+
     if (password !== confirmPassword) {
       setError("Passwords don't match");
       setIsLoading(false);
@@ -50,6 +57,7 @@ const SignupPage = () => {
     try {
       const data = await registerUser(name, email, password);
       login(data.user, data.token);
+      toast.success('Account created successfully! 🎉');
       navigate('/');
     } catch (err) {
       console.error(err);

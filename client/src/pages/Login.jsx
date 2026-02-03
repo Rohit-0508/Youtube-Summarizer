@@ -5,6 +5,7 @@ import { loginUser } from '../utils/authentication';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import GoogleButton from '../components/GoogleButton';
+import toast from 'react-hot-toast';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -26,6 +27,7 @@ const LoginPage = () => {
       const { user, token } = data;
 
       login(user, token);
+      toast.success('Logged in successfully! 🎉')
       navigate('/');
     } catch (err) {
       console.error(err);

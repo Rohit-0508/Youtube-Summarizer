@@ -4,6 +4,8 @@ import { useAuth } from '../context/AuthContext';
 import { Link } from 'react-router-dom';
 import AIProcessingLoader from './AIProcessingLoader';
 import CountUp from './CountUp';
+import { isValidYouTubeUrl } from '../utils/checkUrl';
+import toast from 'react-hot-toast';
 
 const HeroSection = ({ onSummarize, processing, summary, stats }) => {
   const [url, setUrl] = useState('');
@@ -14,10 +16,16 @@ const HeroSection = ({ onSummarize, processing, summary, stats }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if(!isValidYouTubeUrl(url)) {
+      toast.error('Please enter a valid YouTube URL 🎯');
+      setUrl('');
+      return;
+    }
     if (!url.trim()) return;
     if (!isAuthenticated) {
       setShowAuthPrompt(true);
       setTimeout(() => setShowAuthPrompt(false), 3000);
+      setUrl('');
       return;
     }
 

@@ -6,8 +6,22 @@ exports.signup = async (req, res) => {
   const { name, email, password } = req.body;
 
   try {
-    const existingUser = await User.findOne({ email });
-    if (existingUser) return res.status(400).json({ error: 'User already exists' });
+    const usernameRegex = /^[a-zA-Z0-9_.]{3,20}$/;
+
+    if (!usernameRegex.test(name)) {
+      return res.status(400).json({
+        error: 'Invalid username format'
+      });
+    }
+    const emailExists = await User.findOne({ email });
+    if (emailExists) {
+      return res.status(400).json({ error: 'Email already in use' });
+    }
+
+    const usernameExists = await User.findOne({ username: name });
+    if (usernameExists) {
+      return res.status(400).json({ error: 'Username already in use' });
+    }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
