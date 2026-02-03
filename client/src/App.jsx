@@ -7,6 +7,7 @@ import SignupPage from './pages/Signup';
 import HistoryPage from './pages/History';
 import { Toaster } from 'react-hot-toast';
 import ProtectedRoute from './routes/ProtectedRoute';
+import NotFound from './pages/NotFound';
 
 const App = () => {
   return (
@@ -42,7 +43,7 @@ const App = () => {
         </Route>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
-        <Route path="*" element={<div>404 Not Found</div>} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
   );

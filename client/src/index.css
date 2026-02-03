@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+html,
+body {
+  font-family: 'Nunito';
+}
 
 @layer base {
   body {
@@ -8,10 +12,13 @@
 }
 
 .hide-scrollbar {
-  scrollbar-width: none;        /* Firefox */
-  -ms-overflow-style: none;     /* IE & Edge */
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE & Edge */
 }
 
 .hide-scrollbar::-webkit-scrollbar {
-  display: none;                /* Chrome, Safari */
+  display: none;
+  /* Chrome, Safari */
 }
