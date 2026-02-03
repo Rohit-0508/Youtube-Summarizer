@@ -1,8 +1,9 @@
 import React from "react";
-import { User, History, Settings, LogOut, LogIn, X, Home } from "lucide-react";
+import { User, History, Settings, LogOut, LogIn, X, Home, Scissors } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext"
 import { Link } from "react-router-dom";
+
 import toast from "react-hot-toast";
 
 
@@ -57,7 +58,12 @@ export default function Sidebar({ isOpen, onToggle }) {
       >
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-[#2A314A] lg:justify-center flex-shrink-0">
-          <h2 className="text-lg font-semibold text-gray-100">AI Summarizer</h2>
+          <div className="flex items-center gap-2">
+            <Scissors className="h-6 w-6 text-[#7C7CFF]" />
+            <h2 className="text-xl font-semibold text-gray-100 tracking-wide">
+              ClipSum
+            </h2>
+          </div>
           <button
             onClick={onToggle}
             className="lg:hidden cursor-pointer p-1 rounded text-gray-400 hover:text-gray-200 hover:bg-[#1A2033]"
@@ -88,14 +94,14 @@ export default function Sidebar({ isOpen, onToggle }) {
                 <button
                   onClick={() => handleNavClick(item.href)}
                   className={`w-full cursor-pointer flex items-center px-4 py-3 rounded-lg text-left transition-colors ${location.pathname === item.href
-                      ? "bg-[rgba(124,124,255,0.12)] text-[#7C7CFF]"
-                      : "text-gray-300 hover:bg-[#1A2033]"
+                    ? "bg-[rgba(124,124,255,0.12)] text-[#7C7CFF]"
+                    : "text-gray-300 hover:bg-[#1A2033]"
                     }`}
                 >
                   <item.icon
                     className={`h-5 w-5 mr-3 ${location.pathname === item.href
-                        ? "text-[#7C7CFF]"
-                        : "text-gray-400"
+                      ? "text-[#7C7CFF]"
+                      : "text-gray-400"
                       }`}
                   />
                   {item.label}
