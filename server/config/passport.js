@@ -1,19 +1,26 @@
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const User = require('../models/Users'); // adjust path as needed
+const normalizeUsername = require('../utils/normalizeUsername');
 require('dotenv').config();
 
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL:  process.env.GOOGLE_CALLBACK_URL || 'http://localhost:3000/api/auth/google/callback',
+    callbackURL: process.env.GOOGLE_CALLBACK_URL || 'http://localhost:3000/api/auth/google/callback',
 },
     async (accessToken, refreshToken, profile, done) => {
         try {
             let user = await User.findOne({ googleId: profile.id });
 
             if (!user) {
-                let baseUsername = profile.displayName;
+                let baseUsername = normalizeUsername(
+                    profile.displayName || profile.emails[0].value.split('@')[0]
+                );
+
+                if (!baseUsername) {
+                    baseUsername = `user${Date.now()}`;
+                }
                 let username = baseUsername;
                 let suffix = 1;
 

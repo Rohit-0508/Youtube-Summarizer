@@ -22,11 +22,16 @@ router.get('/google', passport.authenticate('google', {
 router.get('/google/callback',
     passport.authenticate('google', { session: false, failureRedirect: '/' }),
     (req, res) => {
-        const user= req.user;
+        const user = req.user;
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
 
         const frontendURL = process.env.CLIENT_URL || 'http://localhost:5173';
-        const encodedUser = encodeURIComponent(JSON.stringify(user));
+        const safeUser = {
+            id: user._id,
+            name: user.username,
+            email: user.email,
+        };
+        const encodedUser = encodeURIComponent(JSON.stringify(safeUser));
 
         res.redirect(`${frontendURL}?token=${token}&user=${encodedUser}`);
 

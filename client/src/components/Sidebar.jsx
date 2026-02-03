@@ -70,7 +70,7 @@ export default function Sidebar({ isOpen, onToggle }) {
                 <User className="h-5 w-5 text-[#7C7CFF]" />
               </div>
               <div className="ml-3">
-                <p className="text-sm font-medium text-gray-200">{user.name}</p>
+                <p className="text-sm font-medium text-gray-200">{user.name || user.username}</p>
                 <p className="text-xs text-gray-400">{user.email}</p>
               </div>
             </div>
