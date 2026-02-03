@@ -46,6 +46,12 @@ exports.login = async (req, res) => {
   try {
     const user = await User.findOne({ email });
     if (!user) return res.status(400).json({ error: 'User not found' });
+    
+    if (user.googleId && !user.password) {
+      return res.status(400).json({
+        error: 'This account uses Google Sign-In. Please login with Google.'
+      });
+    }
 
     const match = await bcrypt.compare(password, user.password);
     if (!match) return res.status(400).json({ error: 'Invalid password' });
