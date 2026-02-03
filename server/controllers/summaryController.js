@@ -68,7 +68,7 @@ exports.getSummary = async (req, res) => {
 
     // Will get the summary using the ai later
     const { title, description, thumbnail, duration, views } = await getVideoMetadata(videoID);
-    if (!title || !description) {
+    if (!title) {
       return res.status(500).json({ error: 'Failed to fetch video metadata' });
     }
     const summaryText = await summarizeVideo(url, title, description);
@@ -148,16 +148,3 @@ exports.getStats = async (req, res) => {
     res.status(500).json({ error: "Failed to fetch stats" });
   }
 };
-
-
-async function initStats() {
-  const existingCount = await Summary.countDocuments();
-
-  await Stats.findOneAndUpdate(
-    {},
-    { totalSummaryRequests: existingCount },
-    { upsert: true, new: true }
-  );
-
-  console.log("Stats initialized with:", existingCount);
-}

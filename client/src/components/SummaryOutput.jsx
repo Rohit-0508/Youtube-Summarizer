@@ -6,7 +6,6 @@ const SummaryOutput = ({ summaryData }) => {
 
   useEffect(() => {
     if (summaryData && summaryData.summary) {
-      console.log(summaryData)
       const timer = setTimeout(() => setVisible(true), 50);
       return () => clearTimeout(timer);
     } else {
@@ -15,26 +14,28 @@ const SummaryOutput = ({ summaryData }) => {
   }, [summaryData]);
 
   useEffect(() => {
-  if (!summaryData) return;
+    if (!summaryData) return;
 
-  const timeout = setTimeout(() => {
-    const el = document.querySelector('.summary-output-container');
+    const timeout = setTimeout(() => {
+      const el = document.querySelector('.summary-output-container');
 
-    if (el) {
-      el.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
-      });
-    }
-  }, 300); // slightly longer delay to allow animation + render
+      if (el) {
+        el.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+        });
+      }
+    }, 300); // slightly longer delay to allow animation + render
 
-  return () => clearTimeout(timeout);
-}, [summaryData]);
+    return () => clearTimeout(timeout);
+  }, [summaryData]);
 
   if (!summaryData || !summaryData.summary) return null;
 
   const points = summaryData.summary
-    .split('\n\n')
+    .split(/\n|\*\s+/)
+    .map(p => p.trim())
+    .filter(p => p.length > 0)
     .map((point, index) => {
       const htmlFormatted = point
         .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')

@@ -37,7 +37,7 @@ const HeroSection = ({ onSummarize, processing, summary, stats }) => {
       if (err?.response?.status === 403) {
         toast.error(err.response.data.message || 'Free limit reached');
       } else {
-        toast.error('Failed to summarize video');
+        toast.error(err || 'Failed to summarize video');
       }
     } finally {
       setLoading(false);
