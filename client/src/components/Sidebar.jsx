@@ -49,8 +49,9 @@ export default function Sidebar({ isOpen, onToggle }) {
 
       {/* Sidebar */}
       <div
-        className={`fixed left-0 top-0 h-screen w-64 bg-[#131824] border-r border-[#2A314A] transform transition-transform duration-300 ease-in-out z-50 lg:relative lg:translate-x-0 flex flex-col ${isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
+        className={`fixed left-0 top-0 h-[100dvh] w-64 bg-[#131824] border-r border-[#2A314A] transform transition-transform duration-300 ease-in-out z-50 lg:relative lg:translate-x-0 flex flex-col ${isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
           }`}
+         style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
       >
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-[#2A314A] lg:justify-center flex-shrink-0">
