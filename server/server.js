@@ -1,6 +1,6 @@
-const express= require('express');
+const express = require('express');
 const cors = require('cors');
-const connectDB= require('./config/db')
+const connectDB = require('./config/db')
 const summaryRoutes = require('./routes/summaryRoutes');
 const authRoutes = require('./routes/authRoutes');
 const historyRoutes = require('./routes/getHistory');
@@ -25,12 +25,16 @@ app.use(express.urlencoded({ extended: true }));
 connectDB();
 
 app.use('/api/auth', authRoutes);
-app.use('/api/history', historyRoutes );
+app.use('/api/history', historyRoutes);
 
 app.use('/api/summarize', summaryRoutes);
 app.use('/api/stats', statRoutes);
 
+app.get('/health', (req, res) => {
+  res.status(200).send('OK');
+});
+
 
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });
