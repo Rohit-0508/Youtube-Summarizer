@@ -6,6 +6,7 @@ import LoginPage from './pages/Login';
 import SignupPage from './pages/Signup';
 import HistoryPage from './pages/History';
 import { Toaster } from 'react-hot-toast';
+import ProtectedRoute from './routes/ProtectedRoute';
 
 const App = () => {
   return (
@@ -14,9 +15,9 @@ const App = () => {
         position="top-right"
         toastOptions={{
           style: {
-            background: '#1f2937', 
-            color: '#f9fafb',      
-            border: '1px solid #374151', 
+            background: '#1f2937',
+            color: '#f9fafb',
+            border: '1px solid #374151',
           },
           success: {
             iconTheme: {
@@ -35,7 +36,9 @@ const App = () => {
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
-          <Route path="/history" element={<HistoryPage />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path="/history" element={<HistoryPage />} />
+          </Route>
         </Route>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />

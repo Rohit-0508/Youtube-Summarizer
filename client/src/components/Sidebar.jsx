@@ -34,7 +34,7 @@ export default function Sidebar({ isOpen, onToggle }) {
     toast('You have been logged out', {
       icon: '👋',
     });
-    navigate('/');
+    navigate('/', {replace: true});
     if (window.innerWidth < 1024) {
       onToggle()
     }
