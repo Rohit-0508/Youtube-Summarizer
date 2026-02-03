@@ -16,9 +16,8 @@ const Home = () => {
   const handleSummarize = async (link) => {
     const startTime = Date.now();
     try {
-
-      const result = await fetchSummary(link, token);
       setProcessing(true);
+      const result = await fetchSummary(link, token);
 
       const elapsed = Date.now() - startTime;
       const remainingTime = Math.max(MIN_LOADER_TIME - elapsed, 0);
