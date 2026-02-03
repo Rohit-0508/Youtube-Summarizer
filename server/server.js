@@ -10,6 +10,8 @@ const PORT = process.env.PORT || 3000;
 
 const allowedOrigins = [
   'http://localhost:5173',
+  'https://clipsum.in',
+  'https://www.clipsum.in',
   'https://frolicking-sawine-f50a08.netlify.app',
 ];
 
