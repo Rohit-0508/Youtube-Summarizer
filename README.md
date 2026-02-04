@@ -6,7 +6,7 @@ An AI-powered web app that lets users generate quick, clean summaries of YouTube
 
 ## 🚀 Live Demo
 
-🌐 [View Website on Netlify](https://clipsum.in)
+🌐 [View Website](https://clipsum.in)
 
 ---
 
