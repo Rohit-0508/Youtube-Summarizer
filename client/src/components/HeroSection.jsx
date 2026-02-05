@@ -79,7 +79,7 @@ const HeroSection = ({ onSummarize, processing, summary, stats }) => {
             className={`
               h-14 px-8 rounded-xl font-semibold transition-all duration-200
               ${url.trim() && !loading
-                ? 'bg-[#7C7CFF] text-white cursor-pointer hover:bg-[#6A6AF5]'
+                ? 'bg-[#7C7CFF] text-white cursor-pointer cursor-target hover:bg-[#6A6AF5]'
                 : 'bg-[#1A2033] text-gray-500 cursor-not-allowed'
               }
             `}
@@ -106,7 +106,7 @@ const HeroSection = ({ onSummarize, processing, summary, stats }) => {
             <div className="flex gap-2 justify-center">
               <Link to="/login">
                 <button
-                  className="px-4 py-2 text-sm md:text-base font-medium 
+                  className="px-4 py-2 cursor-target text-sm md:text-base font-medium 
                   text-white bg-[#7C7CFF] hover:bg-[#6A6AF5] 
                   rounded-md transition-colors duration-200 cursor-pointer"
                 >
@@ -117,7 +117,7 @@ const HeroSection = ({ onSummarize, processing, summary, stats }) => {
                 <button
                   className="px-4 py-2 text-sm md:text-base font-medium 
                   text-gray-300 border border-[#2A314A] 
-                  hover:bg-[#1A2033] rounded-md transition-colors duration-200 cursor-pointer"
+                  hover:bg-[#1A2033] rounded-md transition-colors duration-200 cursor-target cursor-pointer"
                 >
                   Sign Up
                 </button>

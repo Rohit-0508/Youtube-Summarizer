@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import { Menu } from "lucide-react";
 import Sidebar from "./Sidebar";
-import { Outlet } from "react-router-dom"; // ✅ important import
-
+import { Outlet } from "react-router-dom";
 const Layout = ({ showSidebar = true }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   if (!showSidebar) {
-    return <Outlet />; // ✅ fallback for routes without sidebar
+    return <Outlet />;
   }
 
   return (

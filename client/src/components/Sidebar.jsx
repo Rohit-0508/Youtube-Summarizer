@@ -93,7 +93,7 @@ export default function Sidebar({ isOpen, onToggle }) {
               <li key={item.href}>
                 <button
                   onClick={() => handleNavClick(item.href)}
-                  className={`w-full cursor-pointer flex items-center px-4 py-3 rounded-lg text-left transition-colors ${location.pathname === item.href
+                  className={`w-full cursor-target cursor-pointer flex items-center px-4 py-3 rounded-lg text-left transition-colors ${location.pathname === item.href
                     ? "bg-[rgba(124,124,255,0.12)] text-[#7C7CFF]"
                     : "text-gray-300 hover:bg-[#1A2033]"
                     }`}
@@ -116,7 +116,7 @@ export default function Sidebar({ isOpen, onToggle }) {
           {isAuthenticated ? (
             <button
               onClick={handleLogout}
-              className="w-full flex items-center cursor-pointer text-red-400 hover:text-red-300 hover:bg-red-500/10 px-4 py-2 rounded-lg transition-colors"
+              className="w-full flex items-center cursor-pointer cursor-target text-red-400 hover:text-red-300 hover:bg-red-500/10 px-4 py-2 rounded-lg transition-colors"
             >
               <LogOut className="h-5 w-5 mr-3" />
               Sign Out
@@ -124,14 +124,14 @@ export default function Sidebar({ isOpen, onToggle }) {
           ) : (
             <div className="flex flex-col items-center">
               <Link to="/login" className="w-full max-w-[240px] mb-3">
-                <button className="w-full cursor-pointer flex items-center justify-center bg-[#7C7CFF] text-white text-sm px-4 py-2 rounded-md hover:bg-[#6A6AF5] transition-colors">
+                <button className="w-full cursor-pointer cursor-target flex items-center justify-center bg-[#7C7CFF] text-white text-sm px-4 py-2 rounded-md hover:bg-[#6A6AF5] transition-colors">
                   <LogIn className="h-4 w-4 mr-2" />
                   Sign In
                 </button>
               </Link>
 
               <Link to="/signup" className="w-full max-w-[240px]">
-                <button className="w-full cursor-pointer flex items-center justify-center border border-[#2A314A] text-gray-300 text-sm px-4 py-2 rounded-md hover:bg-[#1A2033] transition-colors">
+                <button className="w-full cursor-pointer cursor-target flex items-center justify-center border border-[#2A314A] text-gray-300 text-sm px-4 py-2 rounded-md hover:bg-[#1A2033] transition-colors">
                   Sign Up
                 </button>
               </Link>

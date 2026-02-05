@@ -54,12 +54,19 @@ const SummaryOutput = ({ summaryData }) => {
 
   return (
     <div
+      onMouseEnter={() => {
+        document.body.setAttribute("data-cursor-disabled", "true");
+      }}
+      onMouseLeave={() => {
+        document.body.removeAttribute("data-cursor-disabled");
+      }}
       className={`
         ${typeof window !== "undefined" && window.html2pdfPrinting ? "" : "transition-all duration-700 ease-out"}
         ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"}
         flex justify-center mb-4 lg:mb-20
         hide-scrollbar
         summary-output-container
+        cursor-normal
       `}
     >
       <div className="w-full border border-[#2A314A] bg-[#131824] max-w-[380px] lg:max-w-[1000px] rounded-xl overflow-hidden">

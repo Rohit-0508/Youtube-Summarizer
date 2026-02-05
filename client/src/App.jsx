@@ -8,10 +8,16 @@ import HistoryPage from './pages/History';
 import { Toaster } from 'react-hot-toast';
 import ProtectedRoute from './routes/ProtectedRoute';
 import NotFound from './pages/NotFound';
+import TargetCursor from './components/TargetCursor';
 
 const App = () => {
   return (
     <Router>
+      <TargetCursor
+        hideDefaultCursor
+        spinDuration={6}
+        hoverDuration={0.35}
+      />
       <Toaster
         position="top-right"
         toastOptions={{

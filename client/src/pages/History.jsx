@@ -129,7 +129,7 @@ export default function HistoryPage() {
                                         <button
                                             onClick={() => setSelectedSummary(item)}
                                             className="flex-1 border border-[#2A314A] 
-                                            cursor-pointer text-sm rounded-lg px-3 py-1 
+                                            cursor-pointer cursor-target text-sm rounded-lg px-3 py-1 
                                             text-gray-300 hover:bg-[#1A2033] transition"
                                         >
                                             <Eye className="h-4 w-4 inline-block mr-1" />
@@ -180,7 +180,7 @@ export default function HistoryPage() {
                     overflow-auto max-h-[90vh] hide-scrollbar">
                         <div className="flex justify-between">
 
-                            <div className="">
+                            <div className="cursor-target">
                                 <PDFDownloadLink
                                     document={<SummaryPDF summary={selectedSummary} />}
                                     fileName={`${selectedSummary.title.replace(/[^a-z0-9]/gi, "_").toLowerCase()}.pdf`}
@@ -200,7 +200,7 @@ export default function HistoryPage() {
                             </div>
                             <button
                                 onClick={() => setSelectedSummary(null)}
-                                className="cursor-pointer 
+                                className="cursor-pointer  cursor-target w-8
                             text-gray-400 hover:text-gray-200 text-xl font-bold"
                             >
                                 ✕
