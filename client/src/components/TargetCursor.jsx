@@ -30,6 +30,15 @@ const TargetCursor = ({
         const isMobileUserAgent = mobileRegex.test(userAgent.toLowerCase());
         return (hasTouchScreen && isSmallScreen) || isMobileUserAgent;
     }, []);
+    const inputSelector = 'input, textarea, select, [contenteditable="true"]';
+
+    const disableCustomCursor = () => {
+        document.body.setAttribute('data-cursor-disabled', 'true');
+    };
+
+    const enableCustomCursor = () => {
+        document.body.removeAttribute('data-cursor-disabled');
+    };
 
     const constants = useMemo(
         () => ({
@@ -117,7 +126,7 @@ const TargetCursor = ({
 
 
     useEffect(() => {
-        if (isMobile || !cursorRef.current || document.body.hasAttribute("data-cursor-disabled")) return;
+        if (isMobile || !cursorRef.current) return;
 
         const originalCursor = document.body.style.cursor;
         if (hideDefaultCursor) {
@@ -225,6 +234,21 @@ const TargetCursor = ({
 
         window.addEventListener('mousedown', mouseDownHandler);
         window.addEventListener('mouseup', mouseUpHandler);
+
+        const handleMouseOver = (e) => {
+            if (e.target.closest(inputSelector)) {
+                disableCustomCursor();
+            }
+        };
+
+        const handleMouseOut = (e) => {
+            if (e.target.closest(inputSelector)) {
+                enableCustomCursor();
+            }
+        };
+
+        document.addEventListener('mouseover', handleMouseOver);
+        document.addEventListener('mouseout', handleMouseOut);
 
         const enterHandler = e => {
             const directTarget = e.target;
@@ -361,7 +385,9 @@ const TargetCursor = ({
             if (activeTarget) {
                 cleanupTarget(activeTarget);
             }
-
+            document.removeEventListener('mouseover', handleMouseOver);
+            document.removeEventListener('mouseout', handleMouseOut);
+            
             spinTl.current?.kill();
             document.body.style.cursor = originalCursor;
 
