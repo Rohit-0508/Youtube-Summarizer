@@ -1,4 +1,4 @@
-# 🧠 AI YouTube Summarizer
+# 🧠 ClipSum
 
 An AI-powered web app that lets users generate quick, clean summaries of YouTube videos (including long-form or live content). Ideal for fast comprehension, learning, or note-taking. Built with **React**, **Node.js**, **MongoDB**, and **Google Gemini AI**.
 
@@ -6,7 +6,7 @@ An AI-powered web app that lets users generate quick, clean summaries of YouTube
 
 ## 🚀 Live Demo
 
-🌐 [View Website on Netlify](https://frolicking-sawine-f50a08.netlify.app/)
+🌐 [View Website](https://clipsum.in)
 
 ---
 
