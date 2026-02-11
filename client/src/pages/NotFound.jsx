@@ -38,6 +38,7 @@ const NotFound = () => {
               hover:bg-[#6A6AF5]
               transition-colors
               cursor-pointer
+              cursor-target
             "
           >
             Go back to Home

@@ -9,6 +9,7 @@ import { Toaster } from 'react-hot-toast';
 import ProtectedRoute from './routes/ProtectedRoute';
 import NotFound from './pages/NotFound';
 import TargetCursor from './components/TargetCursor';
+import Otp from './pages/Otp';
 
 const App = () => {
   return (
@@ -49,6 +50,7 @@ const App = () => {
         </Route>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
+        <Route path="/otp" element={<Otp />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
