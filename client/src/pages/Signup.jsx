@@ -19,7 +19,6 @@ const SignupPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -56,9 +55,12 @@ const SignupPage = () => {
 
     try {
       const data = await registerUser(name, email, password);
-      login(data.user, data.token);
-      toast.success('Account created successfully! 🎉');
-      navigate('/');
+      
+      toast.success('Please Verify your email with the OTP');
+
+      //toast.success('Account created successfully! 🎉');
+      navigate('/verify-otp', { state: { email: data.email } });
+      
     } catch (err) {
       console.error(err);
       setError(err.response?.data?.error || 'Registration failed. Please try again.');

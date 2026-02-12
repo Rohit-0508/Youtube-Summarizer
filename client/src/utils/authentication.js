@@ -9,3 +9,8 @@ export const registerUser = async (name, email, password) => {
   const res = await api.post('/auth/signup', { name, email, password });
   return res.data;
 };
+
+export const verifyOtp = async (email, otp)=> {
+  const res = await api.post('/auth/verify-otp', {email, otp});
+  return res.data;
+}

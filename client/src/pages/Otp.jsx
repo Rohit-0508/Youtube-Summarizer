@@ -1,7 +1,15 @@
 import React, { useState } from 'react'
+import toast from 'react-hot-toast';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { verifyOtp } from '../utils/authentication';
+import { useAuth } from '../context/AuthContext';
 
 const Otp = () => {
   const[otp, setOtp] = useState(['', '', '', '', '', '']);
+  const { login } = useAuth();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const email = location.state?.email || " ";
 
   const handleChange = (index, value)=>{
     if(isNaN(value)) return;
@@ -20,8 +28,17 @@ const Otp = () => {
     }
   }
 
-  const handleSubmit = ()=>{
-    console.log('OTP entered:', otp.join(''));
+  const handleSubmit = async ()=>{
+    const otpString = otp.join('');
+    try {
+      const data = await verifyOtp(email, otpString);
+      login(data.user, data.token);
+      toast.success('OTP Verified Successfully! 🎉');
+      navigate('/');
+    } catch (error) {
+      console.error('Error verifying OTP:', error);
+      toast.error('Invalid OTP. Please try again.');
+    }
     setOtp(['', '', '', '', '', '']);
   }
   return (
@@ -29,7 +46,7 @@ const Otp = () => {
       <div className='w-full max-w-[500px] bg-[#131824] border border-[#2A314A] p-8 rounded-lg flex flex-col justify-center items-center gap-6'>
         <div className='w-full flex flex-col justify-center items-center gap-2'>
           <h1 className='text-2xl sm:text-3xl font-bold'>Verify Your Email</h1>
-          <p className='text-gray-400 text-sm sm:text-base'>Enter the OTP sent to your Email</p>
+          <p className='text-gray-400 text-sm sm:text-base'>Enter the OTP sent to your Email: {email}</p>
         </div>
         <div className='flex w-full justify-center items-center gap-4 max-w-full'>
           {[...Array(6)].map((_, index) => (

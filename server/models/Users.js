@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema({
     googleId: {
         type: String,
         unique: true,
-        sparse: true 
+        sparse: true
     },
     plan: {
         type: String,
@@ -33,6 +33,16 @@ const userSchema = new mongoose.Schema({
     summaryCount: {
         type: Number,
         default: 0,
+    },
+    isVerified: {
+        type: Boolean,
+        default: false,
+    },
+    otp: {
+        type: String,
+    },
+    otpExpiry: {
+        type: Date,
     },
     createdAt: {
         type: Date,
