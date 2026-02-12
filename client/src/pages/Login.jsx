@@ -31,7 +31,18 @@ const LoginPage = () => {
       navigate('/');
     } catch (err) {
       console.error(err);
-      setError(err.response?.data?.error || 'Login failed. Please try again.');
+
+      const response = err.response?.data;
+
+      
+      if (response?.isVerified === false) {
+        toast('Please verify your email first.');
+        navigate('/verify-otp', { state: { email: response.email } });
+        return;
+      }
+
+      // Normal error
+      setError(response?.error || 'Login failed. Please try again.');
     } finally {
       setIsLoading(false);
     }

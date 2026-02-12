@@ -75,6 +75,33 @@ exports.login = async (req, res) => {
     const match = await bcrypt.compare(password, user.password);
     if (!match) return res.status(400).json({ error: 'Invalid password' });
 
+    if (!user.isVerified) {
+
+      if (!user.otp || user.otpExpiry < new Date()) {
+        const otp = generateOtp();
+        const otpExpiry = new Date(Date.now() + 10 * 60 * 1000);
+
+        user.otp = otp;
+        user.otpExpiry = otpExpiry;
+        await user.save();
+
+        await sendEmail({
+          to: email,
+          subject: "Your Signup OTP Code",
+          text: `Hello ${user.username},\n\nYour OTP code is ${otp}.`,
+          html: `<p>Hello <strong>${user.username}</strong>,</p>
+             <p>Your OTP code is: <h2>${otp}</h2></p>
+             <p>This code is valid for signup verification.</p>`,
+        });
+      }
+
+      return res.status(403).json({
+        error: 'Email not verified',
+        isVerified: false,
+        email: user.email
+      });
+    }
+
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
 
     res.json({ token, user: { id: user._id, name: user.username, email: user.email } });
