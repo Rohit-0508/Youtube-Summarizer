@@ -1,40 +1,39 @@
-const nodemailer = require('nodemailer');
+const axios = require('axios');
 require('dotenv').config();
 
-if (!process.env.BREVO_SMTP_USER) {
-  throw new Error("BREVO_SMTP_USER is not defined in environment variables");
-}
-if (!process.env.BREVO_SMTP_PASS) {
-  throw new Error("BREVO_SMTP_PASS is not defined in environment variables");
+if (!process.env.BREVO_API_KEY) {
+  throw new Error("BREVO_API_KEY not defined");
 }
 
+const sendEmail = async ({ to, subject, text, html }) => {
+  try {
+    const response = await axios.post(
+      'https://api.brevo.com/v3/smtp/email',
+      {
+        sender: {
+          name: "Clipsum",
+          email: "otp@clipsum.in",
+        },
+        to: [{ email: to }],
+        subject: subject,
+        htmlContent: html || "",
+        textContent: text || "",
+      },
+      {
+        headers: {
+          'api-key': process.env.BREVO_API_KEY,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
 
-const transporter = nodemailer.createTransport({
-  host: 'smtp-relay.brevo.com',
-  port: 587,
-  secure: false,
-  auth: {
-    user: process.env.BREVO_SMTP_USER,
-    pass: process.env.BREVO_SMTP_PASS,
-  },
-});
+    console.log("Email sent via API");
+    return response.data;
 
-const sendEmail = async ({to, subject, text, html})=>{
-  try{
-    const info = await transporter.sendMail({
-      from: `"Clipsum" <otp@clipsum.in>`,
-      to, 
-      subject,
-      text: text || '',
-      html: html || '',
-    });
-
-    console.log("Email sent: ", info.messageId);
-    return info;
-  }catch (error) {
-    console.error("Error sending email:", error.message);
+  } catch (error) {
+    console.error("Brevo API error:", error.response?.data || error.message);
     throw new Error("Failed to send email");
   }
-}
+};
 
-module.exports = {sendEmail};
+module.exports = { sendEmail };
