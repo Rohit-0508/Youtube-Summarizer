@@ -200,7 +200,7 @@ export default function HistoryPage() {
                             </div>
                             <button
                                 onClick={() => setSelectedSummary(null)}
-                                className="cursor-pointer  cursor-target w-8
+                                className="cursor-pointer w-8
                             text-gray-400 hover:text-gray-200 text-xl font-bold"
                             >
                                 ✕
