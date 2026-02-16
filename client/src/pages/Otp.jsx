@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import toast from 'react-hot-toast';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { verifyOtp } from '../utils/authentication';
@@ -9,7 +9,13 @@ const Otp = () => {
   const { login } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
-  const email = location.state?.email || " ";
+  const email = location.state?.email;
+
+  useEffect(()=>{
+    if(!email){
+      navigate('/login');
+    }
+  },[email, navigate]);
 
   const handleChange = (index, value)=>{
     if(isNaN(value)) return;

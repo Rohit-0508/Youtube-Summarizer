@@ -1,7 +1,8 @@
 import { Eye, EyeOff } from 'lucide-react';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { resetPassword } from '../utils/authentication';
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 const ResetPassword = () => {
 
@@ -12,8 +13,15 @@ const ResetPassword = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
+    const navigate = useNavigate();
 
     const token = new URLSearchParams(window.location.search).get('token');
+
+    useEffect(()=>{
+        if(!token){
+            navigate('/login');
+        }
+    })
 
     const handleSubmit = async (e) => {
         e.preventDefault();
