@@ -6,7 +6,7 @@ require('dotenv').config();
 
 const router = express.Router();
 
-const { signup, login, verifyOtp } = require('../controllers/authController');
+const { signup, login, verifyOtp, requestPasswordReset, resetPassword } = require('../controllers/authController');
 
 // POST /api/auth/signup
 router.post('/signup', signup);
@@ -15,6 +15,10 @@ router.post('/signup', signup);
 router.post('/login', login);
 
 router.post('/verify-otp', verifyOtp);
+
+router.post('/request-password-reset', requestPasswordReset);
+
+router.post('/reset-password', resetPassword);
 
 // GET /api/auth/google
 router.get('/google', passport.authenticate('google', {

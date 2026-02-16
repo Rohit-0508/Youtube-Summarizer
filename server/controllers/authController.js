@@ -1,8 +1,10 @@
 const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const User = require('../models/Users');
 const { generateOtp } = require('../utils/generateOtp');
 const { sendEmail } = require('../config/sendGrid');
+
 exports.signup = async (req, res) => {
   const { name, email, password } = req.body;
 
@@ -154,3 +156,87 @@ exports.verifyOtp = async (req, res) => {
   }
 
 }
+
+exports.requestPasswordReset = async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    if (!email) {
+      return res.status(400).json({ error: "Email is required" });
+    }
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(200).json({
+        message: "If an account with that email exists, a reset link has been sent."
+      });
+    }
+
+    const resetToken = crypto.randomBytes(32).toString('hex');
+    const resetExpiry = new Date(Date.now() + 15 * 60 * 1000); 
+
+    user.passwordResetToken = resetToken;
+    user.passwordResetExpiry = resetExpiry;
+    await user.save();
+
+    const resetLink = `https://clipsum.in/reset-password?token=${resetToken}`;
+
+    await sendEmail({
+      to: user.email,
+      subject: "Reset Your Clipsum Password",
+      text: `Hello ${user.username},
+
+Click the link below to reset your password:
+
+${resetLink}
+
+This link will expire in 15 minutes.`,
+      html: `
+        <p>Hello <strong>${user.username}</strong>,</p>
+        <p>Click the button below to reset your password:</p>
+        <a href="${resetLink}" 
+           style="display:inline-block;padding:10px 20px;background:#7C7CFF;color:#fff;text-decoration:none;border-radius:5px;">
+           Reset Password
+        </a>
+        <p>This link will expire in 15 minutes.</p>
+      `,
+    });
+
+    return res.status(200).json({
+      message: "If an account with that email exists, a reset link has been sent."
+    });
+
+  } catch (err) {
+    console.error("Forgot password error:", err.message);
+    return res.status(500).json({ error: "Server error during password reset request" });
+  }
+};
+
+exports.resetPassword = async (req, res)=>{
+  const {token, newPassword} = req.body;
+
+  try{
+    if(!token || !newPassword){
+      return res.status(400).json({error: "Token and new password are required"});
+    }
+    const user = await User.findOne({passwordResetToken: token});
+    if(!user){
+      return res.status(400).json({error: "Invalid or expired token"});
+    }
+    if(user.passwordResetExpiry < new Date()){
+      return res.status(400).json({error: "Token expired"});
+    }
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPassword;
+    user.passwordResetToken = undefined;
+    user.passwordResetExpiry = undefined;
+    await user.save();
+    return res.status(200).json({message: "Password reset successful. Please log in with your new password."});
+  }catch(err){
+    console.error("Reset Password error:", err.message);
+    return res.status(500).json({error: "Server error during password reset"});
+  }
+}
+
+

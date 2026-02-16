@@ -14,3 +14,13 @@ export const verifyOtp = async (email, otp)=> {
   const res = await api.post('/auth/verify-otp', {email, otp});
   return res.data;
 }
+
+export const requestPasswordReset = async (email)=>{
+  const res = await api.post('/auth/request-password-reset', {email});
+  return res.data;
+}
+
+export const resetPassword = async (token, newPassword) =>{
+  const res = await api.post('/auth/reset-password', {token, newPassword});
+  return res.data;
+}
