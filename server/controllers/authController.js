@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/Users');
 const { generateOtp } = require('../utils/generateOtp');
 const { sendEmail } = require('../config/sendGrid');
+const { canSendEmail } = require('../utils/emailCooldown');
 
 exports.signup = async (req, res) => {
   const { name, email, password } = req.body;
@@ -38,6 +39,7 @@ exports.signup = async (req, res) => {
       otp,
       otpExpiry,
       isVerified: false,
+      lastEmailSentAt: new Date(),
     });
 
     //Send OTP to user's via email
@@ -79,12 +81,21 @@ exports.login = async (req, res) => {
 
     if (!user.isVerified) {
 
+      if (!canSendEmail(user)) {
+          return res.status(429).json({
+            error: "Please wait before requesting another email."
+          });
+        }
+
       if (!user.otp || user.otpExpiry < new Date()) {
+
         const otp = generateOtp();
         const otpExpiry = new Date(Date.now() + 10 * 60 * 1000);
 
         user.otp = otp;
         user.otpExpiry = otpExpiry;
+
+        user.lastEmailSentAt = new Date();
         await user.save();
 
         await sendEmail({
@@ -173,14 +184,21 @@ exports.requestPasswordReset = async (req, res) => {
       });
     }
 
+    if (!canSendEmail(user)) {
+      return res.status(429).json({
+        error: "Please wait before requesting another email."
+      });
+    }
+
     const resetToken = crypto.randomBytes(32).toString('hex');
-    const resetExpiry = new Date(Date.now() + 15 * 60 * 1000); 
+    const resetExpiry = new Date(Date.now() + 15 * 60 * 1000);
 
     user.passwordResetToken = resetToken;
     user.passwordResetExpiry = resetExpiry;
-    await user.save();
 
     const resetLink = `https://clipsum.in/reset-password?token=${resetToken}`;
+    user.lastEmailSentAt = new Date();
+    await user.save();
 
     await sendEmail({
       to: user.email,
@@ -213,29 +231,29 @@ This link will expire in 15 minutes.`,
   }
 };
 
-exports.resetPassword = async (req, res)=>{
-  const {token, newPassword} = req.body;
+exports.resetPassword = async (req, res) => {
+  const { token, newPassword } = req.body;
 
-  try{
-    if(!token || !newPassword){
-      return res.status(400).json({error: "Token and new password are required"});
+  try {
+    if (!token || !newPassword) {
+      return res.status(400).json({ error: "Token and new password are required" });
     }
-    const user = await User.findOne({passwordResetToken: token});
-    if(!user){
-      return res.status(400).json({error: "Invalid or expired token"});
+    const user = await User.findOne({ passwordResetToken: token });
+    if (!user) {
+      return res.status(400).json({ error: "Invalid or expired token" });
     }
-    if(user.passwordResetExpiry < new Date()){
-      return res.status(400).json({error: "Token expired"});
+    if (user.passwordResetExpiry < new Date()) {
+      return res.status(400).json({ error: "Token expired" });
     }
     const hashedPassword = await bcrypt.hash(newPassword, 10);
     user.password = hashedPassword;
     user.passwordResetToken = undefined;
     user.passwordResetExpiry = undefined;
     await user.save();
-    return res.status(200).json({message: "Password reset successful. Please log in with your new password."});
-  }catch(err){
+    return res.status(200).json({ message: "Password reset successful. Please log in with your new password." });
+  } catch (err) {
     console.error("Reset Password error:", err.message);
-    return res.status(500).json({error: "Server error during password reset"});
+    return res.status(500).json({ error: "Server error during password reset" });
   }
 }
 

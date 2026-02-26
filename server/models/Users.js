@@ -51,6 +51,9 @@ const userSchema = new mongoose.Schema({
     passwordResetExpiry: {
         type: Date,
     },
+    lastEmailSentAt: {
+        type: Date,
+    },
     createdAt: {
         type: Date,
         default: Date.now

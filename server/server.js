@@ -5,7 +5,11 @@ const summaryRoutes = require('./routes/summaryRoutes');
 const authRoutes = require('./routes/authRoutes');
 const historyRoutes = require('./routes/getHistory');
 const statRoutes = require('./routes/statRoutes');
+const {globalLimiter, authLimiter, summarizeLimiter} = require('./middleware/rateLimiter')
+
 const app = express();
+app.set('trust proxy', 1);
+
 const PORT = process.env.PORT || 3000;
 
 const allowedOrigins = [
@@ -25,11 +29,12 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 connectDB();
+app.use(globalLimiter);
 
-app.use('/api/auth', authRoutes);
+app.use('/api/auth',authLimiter , authRoutes);
 app.use('/api/history', historyRoutes);
 
-app.use('/api/summarize', summaryRoutes);
+app.use('/api/summarize', summarizeLimiter, summaryRoutes);
 app.use('/api/stats', statRoutes);
 
 app.get('/health', (req, res) => {
