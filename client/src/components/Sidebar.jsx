@@ -61,7 +61,7 @@ export default function Sidebar({ isOpen, onToggle }) {
           <div className="flex items-center gap-2">
             <Scissors className="h-6 w-6 text-[#7C7CFF]" />
             <h2 className="text-xl font-semibold text-gray-100 tracking-wide">
-              ClipSum
+              Clipsum
             </h2>
           </div>
           <button
