@@ -50,12 +50,12 @@ const HeroSection = ({ onSummarize, processing, summary, stats }) => {
         <div className="flex items-center justify-center mb-6">
           <Sparkles className="h-8 w-8 text-[#7C7CFF] mr-2" />
           <h1 className="text-4xl md:text-6xl font-semibold text-gray-100">
-            AI Video Summarizer
+            Clipsum 
           </h1>
         </div>
 
         <p className="text-xl md:text-2xl text-gray-400 mb-6 leading-relaxed">
-          Get concise summaries of any YouTube video in seconds using AI
+          Get concise summaries of any YouTube video in seconds using Clipsum
         </p>
 
         <form
